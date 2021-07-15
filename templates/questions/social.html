@@ -1,0 +1,60 @@
+{% extends 'questions/base.html' %}
+{% block title %}
+    بخش کلاس اجتماعی
+{% endblock %}
+{% block extra_head %}
+    <style>
+        .hide {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+
+    </style>
+{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <h4>{{ home_question.question_title }}</h4>
+        <select name="home">
+            {% for item in home_question.options.all %}
+                <option value="{{ item.option_value }}">{{ item.option_title }}</option>
+            {% endfor %}
+        </select>
+        <h4>{{ job_question.question_title }}</h4>
+        {% for item in job_question.options.all %}
+                <input name="job" type="checkbox" name="{{ item.option_title }}" value="{{ item.option_value }}">
+            <label>{{ item.option_title }}</label>
+        {% endfor %}
+        <h3 class="error hide">لطفا حداکثر 3 شغل انتخاب نمایید</h3>
+        <h3>{{ region_question.question_title }}</h3>
+        <select name="region">
+            {% for reg in region %}
+                <option value="{{ reg.region_value }}">{{ reg.region_title }}</option>
+            {% endfor %}
+        </select>
+        <div>
+            <button type="submit" class="btn btn-primary btn-lg">ادامه</button>
+        </div>
+    </form>
+{% endblock %}
+{% block js %}
+    <script type="application/javascript">
+        let radiobuttnons = $('input[type=checkbox]')
+        radiobuttnons.on('change', function (e) {
+            if ($('input[type=checkbox]:checked').length > 3) {
+                $(this).prop('checked', false);
+                $('.error').removeClass('hide')
+                $('.error').addClass('show')
+            } else {
+                $('.error').addClass('hide')
+                $('.error').removeClass('show')
+
+            }
+        });
+
+
+    </script>
+{% endblock %}
