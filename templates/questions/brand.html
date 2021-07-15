@@ -35,7 +35,6 @@
 {% endblock %}
 {% block js %}
     <script>
-        let last_click;
             $(document).ready(function () {
                 get_brands()
             });
@@ -268,29 +267,16 @@
             let questions = $('.questions')
             let temp;
             if (next_or_previous == 'next') {
-                if (last_click == 'previous') {
-                    temp = parseInt(current_question_id) + 2
-                } else {
-                    temp = parseInt(current_question_id) + 1
-                }
+                temp = parseInt(current_question_id) + 1
                 questions.addClass('hide')
                 current_question.removeClass('hide')
-                last_click = 'next'
             } else if (next_or_previous == 'previous') {
-                questions.addClass('hide')
-                if (last_click == 'next') {
-                    temp = parseInt(current_question_id) - 2
-                } else {
                     temp = parseInt(current_question_id) - 1
-                }
                 current_question.removeClass('hide')
-                last_click = 'previous'
-
             }
             if (temp == 8) {
                 $('#previous_btn').addClass('hide')
             }
-
             $('input[name=first_question]').val(temp)
         }
 
