@@ -44,39 +44,125 @@
         $('#next_btn').click(function () {
             let current_question_id = $('input[name=first_question]').val()
             let last_question = $('input[name=last_question]').val()
+            //چک میکنم که به سوال آخر رسیدم submit کنم
             if (parseInt(current_question_id) > parseInt(last_question)) {
                 $('#next_btn').addClass('hide')
                 $('#submit').removeClass('hide')
             }
+
             let brands_place = $('#options' + (current_question_id - 1))
+            //checkbox های تیک خورده را پیدا میکنم
             let answer = document.querySelectorAll('input:checked')
             if (answer.length == 0) {
                 answer = document.querySelectorAll('input[type=text]')
             }
+            //بخش گزینه های سوال قبلی را پاک میکنم
             brands_place.html('')
-            if ((current_question_id - 1) == 8) {
-                question_8(answer)
-            } else if ((current_question_id - 1) == 9) {
-                question_9(answer)
-            } else if ((current_question_id - 1) == 10) {
-                question_10(answer)
-            } else if ((current_question_id - 1) == 11) {
-                question_11(answer)
-            } else if ((current_question_id - 1) == 12) {
-                question_12(answer)
-            } else if ((current_question_id - 1) == 13) {
-                question_13(answer)
-            } else if ((current_question_id - 1) == 14) {
-                question_14(answer)
-            } else if ((current_question_id - 1) == 15) {
-                question_15(answer)
-            } else if ((current_question_id - 1) == 16) {
-                question_16(answer)
-            } else if ((current_question_id - 1) == 17) {
-                question_17(answer)
-            }
+            // به سوال بعدی بروم
+            go_to_next_or_previous_question(answer)
+            //صفحه را refresh به بعد میکنم
             refresh_page('next')
         });
+
+        function go_to_next_or_previous_question(answer) {
+            let current_question_id = $('input[name=first_question]').val()
+
+            if ((current_question_id - 1) == 8) {
+                let temp = save_answer(answer, 'A1')
+                let brands = JSON.parse(localStorage.brands).brands
+                if (answer != 99) {
+                    let index
+                    for (var key in temp) {
+                        index = temp[key]
+                    }
+                    if (index != undefined) {
+                        let temp1 = brands.splice(0, index - 1)
+                        let temp2 = brands.splice(1, brands.length)
+                        brands = temp1.concat(temp2)
+                        localStorage.removeItem('brands')
+                        localStorage.setItem('brands', JSON.stringify(brands))
+                    }
+                }
+                show_options(brands, 'brands')
+
+            }
+            else if ((current_question_id - 1) == 9) {
+                let temp = save_answer(answer, 'A2')
+                let A1 = JSON.parse(localStorage.A1)
+                $.extend(temp, A1)
+                show_options(temp, 'rest')
+            }
+            else if ((current_question_id - 1) == 10) {
+                let temp = save_answer(answer, 'A4')
+                show_options(temp, 'rest')
+                let radiobuttnons = $('input[type=checkbox]')
+                radiobuttnons.on('change', function (e) {
+                    if ($('input[type=checkbox]:checked').length > 3) {
+                        $(this).prop('checked', false);
+                        alert('لطفا فقط 3 برند را انتخاب کنید')
+                    }
+                });
+            }
+            else if ((current_question_id - 1) == 11) {
+                let temp = save_answer(answer, 'A6')
+                show_options(temp, 'text')
+            }
+            else if ((current_question_id - 1) == 12) {
+                let temp = save_answer(answer, 'A7')
+                let chart_data = []
+                let char_value = []
+                let sum = 0
+                for (item in temp) {
+                    chart_data.push(item)
+                    //char_value.push(parseInt(temp[item]))
+                    sum += parseInt(temp[item])
+                }
+                for (item in temp) {
+                    char_value.push(parseInt(temp[item]) / sum * 100)
+                }
+                let result = '<div class="row"><div class="col-lg-2 col-md-2 col-sm-12 col-12"></div><div class="col-lg-8 col-md-8 col-sm-12 col-12"><canvas id="myChart" width="400" height="400"></canvas></div></div>'
+                let current_question_id = $('input[name=first_question]').val()
+                let brands_place = $('#options' + current_question_id)
+                brands_place.html(result)
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: chart_data,
+                        datasets: [{
+                            label: chart_data,
+                            data: char_value,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                });
+            }
+            else if ((current_question_id - 1) == 13) {
+                let temp = save_answer(answer, 'A8')
+            }
+            else if ((current_question_id - 1) == 14) {
+                let temp = save_answer(answer, 'A9')
+            }
+            else if ((current_question_id - 1) == 15) {
+                let temp = save_answer(answer, 'A10')
+            }
+            else if ((current_question_id - 1) == 16) {
+                let temp = save_answer(answer, 'A11')
+            }
+            else if ((current_question_id - 1) == 17) {
+                let temp = save_answer(answer, 'A12')
+            }
+        }
 
         function refresh_page() {
             $('#previous_btn').removeClass('hide')
@@ -140,114 +226,6 @@
             }
             localStorage.setItem(where, JSON.stringify(temp))
             return temp
-        }
-
-        function question_8(answer) {
-            let temp = save_answer(answer, 'A1')
-            let brands = JSON.parse(localStorage.brands).brands
-            if (answer != 99) {
-                let index
-                for (var key in temp) {
-                    index = temp[key]
-                }
-                if (index != undefined) {
-                    let temp1 = brands.splice(0, index - 1)
-                    let temp2 = brands.splice(1, brands.length)
-                    brands = temp1.concat(temp2)
-                    localStorage.removeItem('brands')
-                    localStorage.setItem('brands', JSON.stringify(brands))
-                }
-            }
-            show_options(brands, 'brands')
-        }
-
-        function question_9(answer) {
-            let temp = save_answer(answer, 'A2')
-            let A1 = JSON.parse(localStorage.A1)
-            $.extend(temp, A1)
-            show_options(temp, 'rest')
-        }
-
-        function question_10(answer) {
-            let temp = save_answer(answer, 'A4')
-            show_options(temp, 'rest')
-            let radiobuttnons = $('input[type=checkbox]')
-            radiobuttnons.on('change', function (e) {
-                if ($('input[type=checkbox]:checked').length > 3) {
-                    $(this).prop('checked', false);
-                    alert('لطفا فقط 3 برند را انتخاب کنید')
-                }
-            });
-        }
-
-        function question_11(answer) {
-            let temp = save_answer(answer, 'A6')
-            show_options(temp,'text')
-        }
-
-        function question_12(answer) {
-            let temp = save_answer(answer, 'A7')
-            let chart_data = []
-            let char_value = []
-            let sum = 0
-            for (item in temp) {
-                chart_data.push(item)
-                //char_value.push(parseInt(temp[item]))
-                sum += parseInt(temp[item])
-            }
-            for (item in temp) {
-                char_value.push(parseInt(temp[item]) / sum * 100)
-            }
-            let result = '<div class="row"><div class="col-lg-2 col-md-2 col-sm-12 col-12"></div><div class="col-lg-8 col-md-8 col-sm-12 col-12"><canvas id="myChart" width="400" height="400"></canvas></div></div>'
-            let current_question_id = $('input[name=first_question]').val()
-            let brands_place = $('#options' + current_question_id)
-            brands_place.html(result)
-
-
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: chart_data,
-                    datasets: [{
-                        label: chart_data,
-                        data: char_value,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-            });
-
-
-        }
-
-        function question_13(answer) {
-            let temp = save_answer(answer, 'A8')
-        }
-
-        function question_14(answer) {
-            let temp = save_answer(answer, 'A9')
-        }
-
-        function question_15(answer) {
-            let temp = save_answer(answer, 'A10')
-        }
-
-        function question_16(answer) {
-            let temp = save_answer(answer, 'A11')
-        }
-
-        function question_17(answer) {
-            let temp = save_answer(answer, 'A12')
         }
     </script>
 {% endblock %}
