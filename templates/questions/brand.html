@@ -22,10 +22,10 @@
         <div class="questions" id="questions{{ question.pk }}">
             <h4>{{ question }}</h4>
         </div>
-        <div class="options" id="options{{ question.pk }}">
+    {% endfor %}
+            <div class="options" id="options">
 
         </div>
-    {% endfor %}
     <button type="button" id="previous_btn" class="btn btn-primary btn-lg">قبل</button>
     <button type="button" id="next_btn" class="btn btn-primary btn-lg">بعد</button>
     <form method="post">
@@ -64,15 +64,13 @@
                 $('#next_btn').addClass('hide')
                 $('#submit').removeClass('hide')
             }
-
-            let brands_place = $('#options' + (current_question_id - 1))
             //checkbox های تیک خورده را پیدا میکنم
             let answer = document.querySelectorAll('input:checked')
             if (answer.length == 0) {
                 answer = document.querySelectorAll('input[type=text]')
             }
             //بخش گزینه های سوال قبلی را پاک میکنم
-            brands_place.html('')
+            $('#options').html('')
             // به سوال بعدی بروم
             go_to_next_or_previous_question('next', answer)
             //صفحه را refresh به بعد میکنم
@@ -82,8 +80,7 @@
         $('#previous_btn').click(function () {
             let current_question_id = $('input[name=first_question]').val()
             //بخش گزینه های سوال قبلی را پاک میکنم
-            let brands_place = $('#options' + (current_question_id))
-            brands_place.html('')
+            $('#options').html('')
             //صفحه را refresh به قبل میکنم
             refresh_page('previous')
             // به سوال قبل بروم
@@ -111,7 +108,8 @@
                         alert('لطفا حداکثر یک برند را انتخاب کنید')
                     }
                 });
-            } else if ((current_question_id) == 9) {
+            }
+            else if ((current_question_id) == 9) {
                 //question9
                 let temp
                 if (next_or_previous == 'next') {
@@ -134,7 +132,8 @@
                     }
                 }
                 show_options(brands, 'brands')
-            } else if ((current_question_id) == 10) {
+            }
+            else if ((current_question_id) == 10) {
                 //question10
                 let temp
                 if (next_or_previous == 'next') {
@@ -145,7 +144,8 @@
                     temp = get_data('A2')
                 }
                 show_options(temp, 'rest')
-            } else if ((current_question_id) == 11) {
+            }
+            else if ((current_question_id) == 11) {
                 //question11
                 let temp
                 if (next_or_previous == 'next') {
@@ -161,7 +161,8 @@
                         alert('لطفا فقط 3 برند را انتخاب کنید')
                     }
                 });
-            } else if ((current_question_id) == 12) {
+            }
+            else if ((current_question_id) == 12) {
                 //question12
                 let temp
                 if (next_or_previous == 'next') {
@@ -170,7 +171,8 @@
                     temp = get_data('A6')
                 }
                 show_options(temp, 'text')
-            } else if ((current_question_id) == 13) {
+            }
+            else if ((current_question_id) == 13) {
                 //question13
                 let temp
                 if (next_or_previous == 'next') {
@@ -183,16 +185,13 @@
                 let sum = 0
                 for (item in temp) {
                     chart_data.push(item)
-                    //char_value.push(parseInt(temp[item]))
                     sum += parseInt(temp[item])
                 }
                 for (item in temp) {
                     char_value.push(parseInt(temp[item]) / sum * 100)
                 }
                 let result = '<div class="row"><div class="col-lg-2 col-md-2 col-sm-12 col-12"></div><div class="col-lg-8 col-md-8 col-sm-12 col-12"><canvas id="myChart" width="400" height="400"></canvas></div></div>'
-                let current_question_id = $('input[name=first_question]').val()
-                let brands_place = $('#options' + current_question_id)
-                brands_place.html(result)
+                $('#options').html(result)
                 var ctx = document.getElementById('myChart').getContext('2d');
                 var myChart = new Chart(ctx, {
                     type: 'pie',
@@ -215,7 +214,8 @@
                         }]
                     },
                 });
-            } else if ((current_question_id) == 14) {
+            }
+            else if ((current_question_id) == 14) {
                 //question14
                 let temp
                 if (next_or_previous == 'next') {
@@ -223,7 +223,8 @@
                 } else {
                     temp = get_data('A8')
                 }
-            } else if ((current_question_id) == 15) {
+            }
+            else if ((current_question_id) == 15) {
                 //question15
                 let temp
                 if (next_or_previous == 'next') {
@@ -231,7 +232,8 @@
                 } else {
                     temp = get_data('A9')
                 }
-            } else if ((current_question_id) == 16) {
+            }
+            else if ((current_question_id) == 16) {
                 //question16
                 let temp
                 if (next_or_previous == 'next') {
@@ -239,7 +241,8 @@
                 } else {
                     temp = get_data('A10')
                 }
-            } else if ((current_question_id) == 17) {
+            }
+            else if ((current_question_id) == 17) {
                 //question17
                 let temp
                 if (next_or_previous == 'next') {
@@ -247,7 +250,8 @@
                 } else {
                     temp = get_data('A11')
                 }
-            } else if ((current_question_id) == 18) {
+            }
+            else if ((current_question_id) == 18) {
                 //question18
                 let temp
                 if (next_or_previous == 'next') {
@@ -305,10 +309,7 @@
                     result += '<div class="row">' + item + ': <label><input type="text" name="' + item + '" value=""></label></div>'
                 }
             }
-            //result += '<div class="row"><label><input type="checkbox" name="هیچکدام" value="99"> هیچکدام</label></div>'
-            let current_question_id = $('input[name=first_question]').val()
-            let brands_place = $('#options' + current_question_id)
-            brands_place.html(result)
+            $('#options').html(result)
         }
 
         function save_answer(answer, where) {
