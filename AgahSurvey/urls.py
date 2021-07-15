@@ -11,5 +11,6 @@ urlpatterns = [
     path('brand/<int:answersheet_pk>/<int:question_pk>', views.Brand_View, name='brand'),
     path('brands/', views.brand_list_ajax, name='brand_list_ajax'),
     path('interviewer/get_name/', views.get_interviewer_name, name='interviewer_get_name_ajax'),
-    path('question/get_age/', views.get_age_ajax, name='question_get_age')
+    path('question/get_age/', views.get_age_ajax, name='question_get_age'),
+    path('questions/', views.question_list_ajax, name='question_list_ajax')
 ]

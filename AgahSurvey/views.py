@@ -1,14 +1,12 @@
 from datetime import datetime
 
-from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from rest_framework import request
 
 from AgahSurvey.forms import ResponderForm, InterviewerForm, AnswerSheetForm
 from AgahSurvey.models import Survey, Interviewer, AnswerSheet, Answer, Question, Child, Brand
-from AgahSurvey.serializer import Brand_Serializer
+from AgahSurvey.serializer import Brand_Serializer, Question_Serializer
 
 
 def SurveyView(request, title):
@@ -155,11 +153,9 @@ def Social_class(request, answersheet_pk, question_pk):
 def Brand_View(request, answersheet_pk, question_pk):
     if request.method == 'GET':
         questions = Question.objects.filter(pk__gte=question_pk, pk__lt=question_pk + 10)
-
         context = {'answersheet': answersheet_pk,
                    'last_question': questions.last().pk,
                    'first_question': questions.first().pk,
-                   'questions': questions
                    }
         return render(request, 'questions/brand.html', context=context)
 
@@ -199,3 +195,12 @@ def get_age_ajax(request):
         else:
             context = {'age': today_year - year}
             return JsonResponse(context, status=200)
+
+
+def question_list_ajax(request):
+    if request.method == 'GET' and request.is_ajax:
+        questions = Question.objects.filter(pk__gte=int(request.GET.get('first_question')),
+                                            pk__lt=int(request.GET.get('first_question')) + 10)
+        serializer = Question_Serializer(questions, many=True)
+        context = {'questions': serializer.data}
+        return JsonResponse(context, status=200)
