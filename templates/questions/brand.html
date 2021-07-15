@@ -26,6 +26,7 @@
 
         </div>
     {% endfor %}
+    <button type="button" id="previous_btn" class="btn btn-primary btn-lg">قبل</button>
     <button type="button" id="next_btn" class="btn btn-primary btn-lg">بعد</button>
     <form method="post">
         {% csrf_token %}
@@ -34,14 +35,28 @@
 {% endblock %}
 {% block js %}
     <script>
-        $(document).ready(function () {
-            get_brands_ajax()
-        });
+        let last_click;
+            $(document).ready(function () {
+                get_brands()
+            });
+
+        function get_brands() {
+            $.ajax({
+                url: '{% url 'Survey:brand_list_ajax' %}',
+                dataType: "json",
+                success: function (response) {
+                    localStorage.setItem('brands', JSON.stringify(response))
+                }
+            });
+        }
+
         $(document).ajaxSuccess(function () {
-            go_to_next_or_previous_question()
-            refresh_page()
+            go_to_next_or_previous_question('next')
+            refresh_page('next')
+            $('#previous_btn').addClass('hide')
         })
         $('#next_btn').click(function () {
+            $('#previous_btn').removeClass('hide')
             let current_question_id = $('input[name=first_question]').val()
             let last_question = $('input[name=last_question]').val()
             //چک میکنم که به سوال آخر رسیدم submit کنم
@@ -59,16 +74,34 @@
             //بخش گزینه های سوال قبلی را پاک میکنم
             brands_place.html('')
             // به سوال بعدی بروم
-            go_to_next_or_previous_question(answer)
+            go_to_next_or_previous_question('next', answer)
             //صفحه را refresh به بعد میکنم
             refresh_page('next')
         });
 
-        function go_to_next_or_previous_question(answer=undefined) {
+        $('#previous_btn').click(function () {
+            let current_question_id = $('input[name=first_question]').val()
+            //بخش گزینه های سوال قبلی را پاک میکنم
+            let brands_place = $('#options' + (current_question_id))
+            brands_place.html('')
+            //صفحه را refresh به قبل میکنم
+            refresh_page('previous')
+            // به سوال قبل بروم
+            go_to_next_or_previous_question('previous')
+        });
+
+        function get_data(data) {
+            return JSON.parse(localStorage.getItem(data))
+        }
+
+        function go_to_next_or_previous_question(next_or_previous, answer = undefined) {
             let current_question_id = $('input[name=first_question]').val()
 
             if ((current_question_id) == 8) {
                 //question8
+                if (next_or_previous == 'previous') {
+                    get_brands()
+                }
                 let brands = JSON.parse(localStorage.brands).brands
                 show_options(brands, 'brands')
                 let radiobuttnons = $('input[type=checkbox]')
@@ -78,10 +111,14 @@
                         alert('لطفا حداکثر یک برند را انتخاب کنید')
                     }
                 });
-            }
-            else if ((current_question_id) == 9) {
+            } else if ((current_question_id) == 9) {
                 //question9
-                let temp = save_answer(answer, 'A1')
+                let temp
+                if (next_or_previous == 'next') {
+                    temp = save_answer(answer, 'A1')
+                } else {
+                    temp = get_data('A1')
+                }
                 let brands = JSON.parse(localStorage.brands).brands
                 if (answer != 99) {
                     let index
@@ -97,17 +134,25 @@
                     }
                 }
                 show_options(brands, 'brands')
-            }
-            else if ((current_question_id) == 10) {
+            } else if ((current_question_id) == 10) {
                 //question10
-                let temp = save_answer(answer, 'A2')
-                let A1 = JSON.parse(localStorage.A1)
-                $.extend(temp, A1)
+                let temp
+                if (next_or_previous == 'next') {
+                    temp = save_answer(answer, 'A2')
+                    let A1 = JSON.parse(localStorage.A1)
+                    $.extend(temp, A1)
+                } else {
+                    temp = get_data('A2')
+                }
                 show_options(temp, 'rest')
-            }
-            else if ((current_question_id) == 11) {
+            } else if ((current_question_id) == 11) {
                 //question11
-                let temp = save_answer(answer, 'A4')
+                let temp
+                if (next_or_previous == 'next') {
+                    temp = save_answer(answer, 'A4')
+                } else {
+                    temp = get_data('A4')
+                }
                 show_options(temp, 'rest')
                 let radiobuttnons = $('input[type=checkbox]')
                 radiobuttnons.on('change', function (e) {
@@ -116,15 +161,23 @@
                         alert('لطفا فقط 3 برند را انتخاب کنید')
                     }
                 });
-            }
-            else if ((current_question_id) == 12) {
+            } else if ((current_question_id) == 12) {
                 //question12
-                let temp = save_answer(answer, 'A6')
+                let temp
+                if (next_or_previous == 'next') {
+                    temp = save_answer(answer, 'A6')
+                } else {
+                    temp = get_data('A6')
+                }
                 show_options(temp, 'text')
-            }
-            else if ((current_question_id) == 13) {
+            } else if ((current_question_id) == 13) {
                 //question13
-                let temp = save_answer(answer, 'A7')
+                let temp
+                if (next_or_previous == 'next') {
+                    temp = save_answer(answer, 'A7')
+                } else {
+                    temp = get_data('A7')
+                }
                 let chart_data = []
                 let char_value = []
                 let sum = 0
@@ -162,46 +215,79 @@
                         }]
                     },
                 });
-            }
-            else if ((current_question_id) == 14) {
+            } else if ((current_question_id) == 14) {
                 //question14
-                let temp = save_answer(answer, 'A8')
-            }
-            else if ((current_question_id) == 15) {
-                //question15
-                let temp = save_answer(answer, 'A9')
-            }
-            else if ((current_question_id) == 16) {
-                //question16
-                let temp = save_answer(answer, 'A10')
-            }
-            else if ((current_question_id) == 17) {
-                //question17
-                let temp = save_answer(answer, 'A11')
-            }
-            else if ((current_question_id) == 18) {//question18
-                let temp = save_answer(answer, 'A12')
-            }
-        }
-
-        function refresh_page() {
-            $('#previous_btn').removeClass('hide')
-            let current_question_id = $('input[name=first_question]').val()
-            let questions = $('.questions')
-            let current_question = $('#questions' + current_question_id)
-            questions.addClass('hide')
-            current_question.removeClass('hide')
-            $('input[name=first_question]').val(parseInt(current_question_id) + 1)
-        }
-
-        function get_brands_ajax() {
-            $.ajax({
-                url: '{% url 'Survey:brand_list_ajax' %}',
-                dataType: "json",
-                success: function (response) {
-                    localStorage.setItem('brands', JSON.stringify(response))
+                let temp
+                if (next_or_previous == 'next') {
+                    temp = save_answer(answer, 'A8')
+                } else {
+                    temp = get_data('A8')
                 }
-            });
+            } else if ((current_question_id) == 15) {
+                //question15
+                let temp
+                if (next_or_previous == 'next') {
+                    temp = save_answer(answer, 'A9')
+                } else {
+                    temp = get_data('A9')
+                }
+            } else if ((current_question_id) == 16) {
+                //question16
+                let temp
+                if (next_or_previous == 'next') {
+                    temp = save_answer(answer, 'A10')
+                } else {
+                    temp = get_data('A10')
+                }
+            } else if ((current_question_id) == 17) {
+                //question17
+                let temp
+                if (next_or_previous == 'next') {
+                    temp = save_answer(answer, 'A11')
+                } else {
+                    temp = get_data('A11')
+                }
+            } else if ((current_question_id) == 18) {
+                //question18
+                let temp
+                if (next_or_previous == 'next') {
+                    temp = save_answer(answer, 'A12')
+                } else {
+                    temp = get_data('A12')
+                }
+            }
+        }
+
+        function refresh_page(next_or_previous) {
+            let current_question_id = $('input[name=first_question]').val()
+            let current_question = $('#questions' + current_question_id)
+            let questions = $('.questions')
+            let temp;
+            if (next_or_previous == 'next') {
+                if (last_click == 'previous') {
+                    temp = parseInt(current_question_id) + 2
+                } else {
+                    temp = parseInt(current_question_id) + 1
+                }
+                questions.addClass('hide')
+                current_question.removeClass('hide')
+                last_click = 'next'
+            } else if (next_or_previous == 'previous') {
+                questions.addClass('hide')
+                if (last_click == 'next') {
+                    temp = parseInt(current_question_id) - 2
+                } else {
+                    temp = parseInt(current_question_id) - 1
+                }
+                current_question.removeClass('hide')
+                last_click = 'previous'
+
+            }
+            if (temp == 8) {
+                $('#previous_btn').addClass('hide')
+            }
+
+            $('input[name=first_question]').val(temp)
         }
 
         function show_options(data, type) {
@@ -219,7 +305,7 @@
                     result += '<div class="row">' + item + ': <label><input type="text" name="' + item + '" value=""></label></div>'
                 }
             }
-            result += '<div class="row"><label><input type="checkbox" name="هیچکدام" value="99"> هیچکدام</label></div>'
+            //result += '<div class="row"><label><input type="checkbox" name="هیچکدام" value="99"> هیچکدام</label></div>'
             let current_question_id = $('input[name=first_question]').val()
             let brands_place = $('#options' + current_question_id)
             brands_place.html(result)
