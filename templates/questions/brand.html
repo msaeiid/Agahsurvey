@@ -77,7 +77,7 @@
             //checkbox های تیک خورده را پیدا میکنم
             let answer = document.querySelectorAll('input:checked')
             if (answer.length == 0) {
-                answer = document.querySelectorAll('input[type=text]')
+                answer = document.querySelectorAll('input[type=number]')
             }
             //بخش گزینه های سوال قبلی را پاک میکنم
             $('#options').html('')
@@ -182,7 +182,7 @@
                 } else {
                     temp = get_data_localstorage('A6')
                 }
-                options_show(temp, 'text')
+                options_show(temp, 'number')
             }
             else if (current_question == 13) {
                 //question13
@@ -233,7 +233,7 @@
                 //question14
                 //چیزی ذخیره نمیشود
                 previous_btn.addClass('hide')
-                options_show(JSON.parse(plocalStorage.A7),'textWithLimit')
+                options_show(JSON.parse(localStorage.A7),'numberWithLimit')
 
             }
             else if (current_question == 15) {
@@ -306,16 +306,14 @@
                     result += '<div class="form-check"><label class="form-check-label" for="flexCheckDefault">' + item + '<input class="form-check-input" type="checkbox" value="' + data[item] + '" name="' + item + '" id="flexCheckDefault"></label></div>'
                 }
             }
-            else if (type == 'text') {
+            else if (type == 'number') {
                 for (item in data) {
-                    result += '<div class="row">' + item + ': <label><input type="text" name="' + item + '" value="" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
+                    result += '<div class="row">' + item + ': <label><input type="number" name="' + item + '" min="0" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
                 }
             }
-            else if (type =='textWithLimit'){
+            else if (type =='numberWithLimit'){
                 for (item in data) {
-                    console.log(data)
-                    console.log(item)
-                    result += '<div class="row">' + item + ': <label><input min="0" max="'+data[item]+'" type="text" name="' + item + '" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
+                    result += '<div class="row">' + item + ': <label><input min="0" max="'+data[item]+'" type="number" name="' + item + '" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
                 }
             }
             options_html.html(result)
