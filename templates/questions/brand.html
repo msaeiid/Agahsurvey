@@ -84,7 +84,10 @@
                 answer = document.querySelectorAll('input[type=number]')
             }
             //بخش گزینه های سوال قبلی را پاک میکنم
-            $('#options').html('')
+            options_html.fadeOut(2).html('')
+            questions_html.fadeOut(2).html('')
+            next_btn.fadeOut(2)
+            previous_btn.fadeOut(2)
             if (current_direction == 'previous') {
                 //صفحه را refresh به بعد میکنم
                 paging('next')
@@ -97,7 +100,10 @@
 
         previous_btn.click(function () {
             //بخش گزینه های سوال قبلی را پاک میکنم
-            options_html.html('')
+            options_html.fadeOut(2).html('')
+            questions_html.fadeOut(2).html('')
+            next_btn.fadeOut(2)
+            previous_btn.fadeOut(2)
             //صفحه را refresh به قبل میکنم
             paging('previous')
             // به سوال قبل بروم
@@ -187,6 +193,12 @@
                     temp = get_data_localstorage('A6')
                 }
                 options_show(temp, 'number')
+                $('.option').change(function () {
+                    var min = parseInt($(this).attr('min'));
+                    if ($(this).val() < min) {
+                        $(this).val(min);
+                    }
+                });
             }
             else if (current_question == 13) {
                 //question13
@@ -208,7 +220,9 @@
                     char_value.push(parseInt(temp[item]) / sum * 100)
                 }
                 let result = '<div class="row"><div class="col-lg-2 col-md-2 col-sm-12 col-12"></div><div class="col-lg-8 col-md-8 col-sm-12 col-12"><canvas id="myChart" width="400" height="400"></canvas></div></div>'
-                $('#options').html(result)
+                options_html.fadeIn(400).html(result)
+                next_btn.fadeIn(400)
+                previous_btn.fadeIn(400)
                 questions_show()
                 var ctx = document.getElementById('myChart').getContext('2d');
                 var myChart = new Chart(ctx, {
@@ -238,13 +252,12 @@
                 //چیزی ذخیره نمیشود
                 previous_btn.addClass('hide')
                 options_show(JSON.parse(localStorage.A7), 'numberWithLimit')
-                $('.option').change(function (){
-                    var max=parseInt($(this).attr('max'));
-                    var min=parseInt($(this).attr('min'));
-                    if($(this).val() > max) {
+                $('.option').change(function () {
+                    var max = parseInt($(this).attr('max'));
+                    var min = parseInt($(this).attr('min'));
+                    if ($(this).val() > max) {
                         $(this).val(max);
-                    }
-                    else if($(this).val() < min){
+                    } else if ($(this).val() < min) {
                         $(this).val(min);
                     }
                 });
@@ -257,6 +270,7 @@
                 } else {
                     temp = get_data_localstorage('A9')
                 }
+                options_show(JSON.parse(localStorage.A9), 'currency')
             }
             else if (current_question == 16) {
                 //question16
@@ -313,20 +327,30 @@
                 for (var i = 0; i < data.length; i++) {
                     result += '<div class="form-check"><label class="form-check-label" for="flexCheckDefault">' + data[i].title + '<input class="form-check-input" type="checkbox" value="' + data[i].pk + '" name="' + data[i].title + '" id="flexCheckDefault"></label></div>'
                 }
-            } else if (type == 'rest') {
+            }
+            else if (type == 'rest') {
                 for (item in data) {
                     result += '<div class="form-check"><label class="form-check-label" for="flexCheckDefault">' + item + '<input class="form-check-input" type="checkbox" value="' + data[item] + '" name="' + item + '" id="flexCheckDefault"></label></div>'
                 }
-            } else if (type == 'number') {
+            }
+            else if (type == 'number') {
                 for (item in data) {
-                    result += '<div class="row">' + item + ': <label><input type="number" name="' + item + '" min="0" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
+                    result += '<div class="row">' + item + ': <label><input type="number" name="' + item + '" min="0" class="option form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
                 }
-            } else if (type == 'numberWithLimit') {
+            }
+            else if (type == 'numberWithLimit') {
                 for (item in data) {
                     result += '<div class="row">' + item + ': <label><input min="0" max="' + data[item] + '" type="number" name="' + item + '" class="option form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
                 }
             }
-            options_html.html(result)
+            else if (type == 'currency') {
+                for (item in data) {
+                    result += '<div class="row">' + item + ': <label><input placeholder="تومان" type="number" name="' + item + '" min="0" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
+                }
+            }
+            options_html.fadeIn(400).html(result)
+            next_btn.fadeIn(400)
+            previous_btn.fadeIn(400)
         }
 
         function questions_show() {
@@ -337,7 +361,7 @@
                     question_title = question.questions[q].question_title
                 }
             }
-            questions_html.html(question_title)
+            questions_html.fadeIn(400).html(question_title)
         }
 
         function set_data_localstorage(answer, where) {
