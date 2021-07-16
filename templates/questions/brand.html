@@ -231,13 +231,10 @@
             }
             else if (current_question == 14) {
                 //question14
+                //چیزی ذخیره نمیشود
                 previous_btn.addClass('hide')
-                let temp
-                if (next_or_previous == 'next') {
-                    temp = set_data_localstorage(answer, 'A8')
-                } else {
-                    temp = get_data_localstorage('A8')
-                }
+                options_show(JSON.parse(plocalStorage.A7),'textWithLimit')
+
             }
             else if (current_question == 15) {
                 //question15
@@ -285,10 +282,8 @@
                 current_direction = 'next'
             } else if (next_or_previous == 'previous') {
                 if (current_direction == 'next') {
-                    console.log('pre+2')
                     temp = current_question - 2
                 } else {
-                    console.log('pre+2')
                     temp = current_question - 1
                 }
                 current_direction = 'previous'
@@ -305,13 +300,22 @@
                 for (var i = 0; i < data.length; i++) {
                     result += '<div class="form-check"><label class="form-check-label" for="flexCheckDefault">' + data[i].title + '<input class="form-check-input" type="checkbox" value="' + data[i].pk + '" name="' + data[i].title + '" id="flexCheckDefault"></label></div>'
                 }
-            } else if (type == 'rest') {
+            }
+            else if (type == 'rest') {
                 for (item in data) {
                     result += '<div class="form-check"><label class="form-check-label" for="flexCheckDefault">' + item + '<input class="form-check-input" type="checkbox" value="' + data[item] + '" name="' + item + '" id="flexCheckDefault"></label></div>'
                 }
-            } else if (type == 'text') {
+            }
+            else if (type == 'text') {
                 for (item in data) {
                     result += '<div class="row">' + item + ': <label><input type="text" name="' + item + '" value="" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
+                }
+            }
+            else if (type =='textWithLimit'){
+                for (item in data) {
+                    console.log(data)
+                    console.log(item)
+                    result += '<div class="row">' + item + ': <label><input min="0" max="'+data[item]+'" type="text" name="' + item + '" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
                 }
             }
             options_html.html(result)
