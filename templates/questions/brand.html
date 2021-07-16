@@ -18,10 +18,14 @@
     <input type="hidden" value="{{ answersheet }}" name="answersheet">
     <input type="hidden" value="{{ last_question }}" name="last_question">
     <input type="hidden" value="{{ first_question }}" name="first_question">
-    <div class="questions" id="questions">
-    </div>
+    <h4>
+        <div class="questions" id="questions">
+        </div>
+    </h4>
+    <br>
     <div class="options" id="options">
     </div>
+    <br>
     <button type="button" id="previous_btn" class="hide btn btn-primary btn-lg">قبل</button>
     <button type="button" id="next_btn" class="btn btn-primary btn-lg">بعد</button>
     <form method="post">
@@ -117,7 +121,7 @@
                 radiobuttnons.on('change', function (e) {
                     if ($('input[type=checkbox]:checked').length > 1) {
                         $(this).prop('checked', false);
-                        alert('لطفا حداکثر یک برند را انتخاب کنید')
+                        alert('لطفا فقط یک برند را انتخاب کنید')
                     }
                 });
             }
@@ -170,7 +174,7 @@
                 radiobuttnons.on('change', function (e) {
                     if ($('input[type=checkbox]:checked').length > 3) {
                         $(this).prop('checked', false);
-                        alert('لطفا حداکثر 3 برند را انتخاب کنید')
+                        alert('لطفا حداکثر سه برند را انتخاب کنید')
                     }
                 });
             }
@@ -233,8 +237,17 @@
                 //question14
                 //چیزی ذخیره نمیشود
                 previous_btn.addClass('hide')
-                options_show(JSON.parse(localStorage.A7),'numberWithLimit')
-
+                options_show(JSON.parse(localStorage.A7), 'numberWithLimit')
+                $('.option').change(function (){
+                    var max=parseInt($(this).attr('max'));
+                    var min=parseInt($(this).attr('min'));
+                    if($(this).val() > max) {
+                        $(this).val(max);
+                    }
+                    else if($(this).val() < min){
+                        $(this).val(min);
+                    }
+                });
             }
             else if (current_question == 15) {
                 //question15
@@ -300,20 +313,17 @@
                 for (var i = 0; i < data.length; i++) {
                     result += '<div class="form-check"><label class="form-check-label" for="flexCheckDefault">' + data[i].title + '<input class="form-check-input" type="checkbox" value="' + data[i].pk + '" name="' + data[i].title + '" id="flexCheckDefault"></label></div>'
                 }
-            }
-            else if (type == 'rest') {
+            } else if (type == 'rest') {
                 for (item in data) {
                     result += '<div class="form-check"><label class="form-check-label" for="flexCheckDefault">' + item + '<input class="form-check-input" type="checkbox" value="' + data[item] + '" name="' + item + '" id="flexCheckDefault"></label></div>'
                 }
-            }
-            else if (type == 'number') {
+            } else if (type == 'number') {
                 for (item in data) {
                     result += '<div class="row">' + item + ': <label><input type="number" name="' + item + '" min="0" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
                 }
-            }
-            else if (type =='numberWithLimit'){
+            } else if (type == 'numberWithLimit') {
                 for (item in data) {
-                    result += '<div class="row">' + item + ': <label><input min="0" max="'+data[item]+'" type="number" name="' + item + '" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
+                    result += '<div class="row">' + item + ': <label><input min="0" max="' + data[item] + '" type="number" name="' + item + '" class="option form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"></div></label></div>'
                 }
             }
             options_html.html(result)
