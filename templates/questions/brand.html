@@ -76,9 +76,9 @@
             if (answer.length == 0) {
                 answer = document.querySelectorAll('input[type=number]')
             }
-
-
-
+            if (answer.length == 0) {
+                answer=$('select')
+            }
 
 
             //بخش گزینه های سوال قبلی را پاک میکنم
@@ -128,8 +128,7 @@
                         alert('لطفا فقط یک برند را انتخاب کنید')
                     }
                 });
-            }
-            else if (current_question == 9) {
+            } else if (current_question == 9) {
                 //question9
                 let temp
                 if (next_or_previous == 'next') {
@@ -152,8 +151,7 @@
                     }
                 }
                 options_show(brands, 'brands')
-            }
-            else if (current_question == 10) {
+            } else if (current_question == 10) {
                 //question10
                 let temp
                 if (next_or_previous == 'next') {
@@ -164,8 +162,7 @@
                     temp = get_data_localstorage('A2')
                 }
                 options_show(temp, 'rest')
-            }
-            else if (current_question == 11) {
+            } else if (current_question == 11) {
                 //question11
                 let temp
                 if (next_or_previous == 'next') {
@@ -181,8 +178,7 @@
                         alert('لطفا حداکثر سه برند را انتخاب کنید')
                     }
                 });
-            }
-            else if (current_question == 12) {
+            } else if (current_question == 12) {
                 //question12
                 let temp
                 if (next_or_previous == 'next') {
@@ -197,8 +193,7 @@
                         $(this).val(min);
                     }
                 });
-            }
-            else if (current_question == 13) {
+            } else if (current_question == 13) {
                 //question13
                 previous_btn.removeClass('hide')
                 let temp
@@ -244,8 +239,7 @@
                         }]
                     },
                 });
-            }
-            else if (current_question == 14) {
+            } else if (current_question == 14) {
                 //question14
                 //چیزی ذخیره نمیشود
                 previous_btn.addClass('hide')
@@ -259,8 +253,7 @@
                         $(this).val(min);
                     }
                 });
-            }
-            else if (current_question == 15) {
+            } else if (current_question == 15) {
                 //question15
                 let temp
                 if (next_or_previous == 'next') {
@@ -269,8 +262,7 @@
                     temp = get_data_localstorage('A9')
                 }
                 options_show(JSON.parse(localStorage.A9), 'currency')
-            }
-            else if (current_question == 16) {
+            } else if (current_question == 16) {
                 //question16
                 let temp
                 if (next_or_previous == 'next') {
@@ -282,11 +274,10 @@
                 let error_message = $('.error')
                 $('select').change(function () {
                         let selects = $('select')
-                        let val1=parseInt(selects[0].value)
-                        let val2=parseInt(selects[1].value)
-                        let val3=parseInt(selects[2].value)
-                        console.log(val1,val2,val3)
-                        if (val1 == val2 || val1 == val3 || val2==val3) {
+                        let val1 = parseInt(selects[0].value)
+                        let val2 = parseInt(selects[1].value)
+                        let val3 = parseInt(selects[2].value)
+                        if (val1 == val2 || val1 == val3 || val2 == val3) {
                             //تکراری هست
                             if (error_message.hasClass('hide')) {
                                 //اگر خطا مخفی هست روشن کن
@@ -296,8 +287,7 @@
                                 // اگر دکمه بعدی فعال هست غیر فعال کن
                                 next_btn.addClass('hide')
                             }
-                        }
-                        else {
+                        } else {
                             //تکراری نیست
                             if (!error_message.hasClass('hide')) {
                                 //اگر خطا فعال هست غیر فعال کن
@@ -310,8 +300,7 @@
                         }
                     }
                 );
-            }
-            else if (current_question == 17) {
+            } else if (current_question == 17) {
                 //question17
                 let temp
                 if (next_or_previous == 'next') {
@@ -319,8 +308,7 @@
                 } else {
                     temp = get_data_localstorage('A11')
                 }
-            }
-            else if (current_question == 18) {
+            } else if (current_question == 18) {
                 //question18
                 let temp
                 if (next_or_previous == 'next') {
@@ -362,8 +350,7 @@
                         '</label>' +
                         '</div>'
                 }
-            }
-            else if (type == 'rest') {
+            } else if (type == 'rest') {
                 for (item in data) {
                     result += '<div class="form-check">' +
                         '<label class="form-check-label" for="flexCheckDefault">' + item + '' +
@@ -371,8 +358,7 @@
                         '</label>' +
                         '</div>'
                 }
-            }
-            else if (type == 'number') {
+            } else if (type == 'number') {
                 for (item in data) {
                     result += '<div class="row">' +
                         '<label>' + item + ': ' +
@@ -380,8 +366,7 @@
                         '</label>' +
                         '</div>'
                 }
-            }
-            else if (type == 'numberWithLimit') {
+            } else if (type == 'numberWithLimit') {
                 for (item in data) {
                     result += '<div class="row">' +
                         '<label>' + item + ': ' +
@@ -389,8 +374,7 @@
                         '</label>' +
                         '</div>'
                 }
-            }
-            else if (type == 'currency') {
+            } else if (type == 'currency') {
                 for (item in data) {
                     result += '<div class="row">' +
                         '<label>' + item + ': ' +
@@ -398,8 +382,7 @@
                         '</label>' +
                         '</div>'
                 }
-            }
-            else if (type == 'option') {
+            } else if (type == 'option') {
                 result += '<h3 class="error hide">لطفا مقادیر متفاوتی را انتخاب نمایید</h3>'
                 for (item in data) {
                     result += '<div class="row">' +
