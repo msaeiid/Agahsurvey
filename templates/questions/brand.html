@@ -5,13 +5,6 @@
 {% block extra_head %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.1/chart.min.js"></script>
     <style>
-        .hide {
-            display: none;
-        }
-
-        .show {
-            display: block;
-        }
     </style>
 {% endblock %}
 {% block content %}
@@ -83,6 +76,11 @@
             if (answer.length == 0) {
                 answer = document.querySelectorAll('input[type=number]')
             }
+
+
+
+
+
             //بخش گزینه های سوال قبلی را پاک میکنم
             options_html.fadeOut(2).html('')
             questions_html.fadeOut(2).html('')
@@ -280,7 +278,38 @@
                 } else {
                     temp = get_data_localstorage('A10')
                 }
-                options_show(JSON.parse(localStorage.A6), 'dropdown')
+                options_show(JSON.parse(localStorage.A6), 'option')
+                let error_message = $('.error')
+                $('select').change(function () {
+                        let selects = $('select')
+                        let val1=parseInt(selects[0].value)
+                        let val2=parseInt(selects[1].value)
+                        let val3=parseInt(selects[2].value)
+                        console.log(val1,val2,val3)
+                        if (val1 == val2 || val1 == val3 || val2==val3) {
+                            //تکراری هست
+                            if (error_message.hasClass('hide')) {
+                                //اگر خطا مخفی هست روشن کن
+                                error_message.removeClass('hide')
+                            }
+                            if (!next_btn.hasClass('hide')) {
+                                // اگر دکمه بعدی فعال هست غیر فعال کن
+                                next_btn.addClass('hide')
+                            }
+                        }
+                        else {
+                            //تکراری نیست
+                            if (!error_message.hasClass('hide')) {
+                                //اگر خطا فعال هست غیر فعال کن
+                                error_message.addClass('hide')
+                            }
+                            if (next_btn.hasClass('hide')) {
+                                //اگر دکمه بعدی غیر فعال هست فعال کن
+                                next_btn.removeClass('hide')
+                            }
+                        }
+                    }
+                );
             }
             else if (current_question == 17) {
                 //question17
@@ -324,6 +353,7 @@
 
         function options_show(data, type) {
             let result = ''
+            let counter = 0
             if (type == 'brands') {
                 for (var i = 0; i < data.length; i++) {
                     result += '<div class="form-check">' +
@@ -369,9 +399,16 @@
                         '</div>'
                 }
             }
-            else if(type=='dropdown'){
+            else if (type == 'option') {
+                result += '<h3 class="error hide">لطفا مقادیر متفاوتی را انتخاب نمایید</h3>'
                 for (item in data) {
-                    result += '<div class="row"><label>' + item + ': </label></div>'
+                    result += '<div class="row">' +
+                        '<label>' + item + ': ' +
+                        '<select name="' + item + '" class="form-select">' +
+                        '<option value="1">اول</option>' +
+                        '<option value="2">دوم</option>' +
+                        '<option value="3">سوم</option>' +
+                        '</select></label></div>'
                 }
             }
             options_html.fadeIn(400).html(result)
