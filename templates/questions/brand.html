@@ -21,10 +21,7 @@
     <br>
     <button type="button" id="previous_btn" class="hide btn btn-primary btn-lg">قبل</button>
     <button type="button" id="next_btn" class="btn btn-primary btn-lg">بعد</button>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" class="hide btn btn-primary btn-lg" id="submit">ادامه</button>
-    </form>
+    <button type="submit" class="hide btn btn-primary btn-lg" id="submit">ارسال پاسخ و رفتن به مرحله آخر</button>
 {% endblock %}
 {% block js %}
     <script>
@@ -43,7 +40,7 @@
 
         function fetch_data_from_server() {
             $.ajax({
-                url: '{% url 'Survey:brand_list_ajax' %}',
+                url: '{% url 'Survey:brands_brands_list' %}',
                 dataType: "json",
                 success: function (response) {
                     localStorage.setItem('brands', JSON.stringify(response))
@@ -51,7 +48,7 @@
             });
             let data = {'first_question': first_question}
             $.ajax({
-                url: '{% url 'Survey:question_list_ajax' %}',
+                url: '{% url 'Survey:brands_questions_list' %}',
                 dataType: "json",
                 data: data,
                 success: function (response) {
@@ -203,15 +200,21 @@
                     temp = get_data_localstorage('A7')
                 }
                 let chart_data = []
-                let char_value = []
+                let chart_value = []
                 let sum = 0
                 for (item in temp) {
                     chart_data.push(item)
                     sum += parseInt(temp[item])
                 }
                 for (item in temp) {
-                    char_value.push(parseInt(temp[item]) / sum * 100)
+                    chart_value.push(parseInt(temp[item]) / sum * 100)
                 }
+
+                let A8 = {}
+                for (var i = 0; i < 3; i++) {
+                    A8[chart_data[i]] = chart_value[i]
+                }
+                localStorage.setItem('A8', JSON.stringify(A8))
                 let result = '<div class="row"><div class="col-lg-2 col-md-2 col-sm-12 col-12"></div><div class="col-lg-8 col-md-8 col-sm-12 col-12"><canvas id="myChart" width="400" height="400"></canvas></div></div>'
                 options_html.fadeIn(400).html(result)
                 next_btn.fadeIn(400)
@@ -224,7 +227,7 @@
                         labels: chart_data,
                         datasets: [{
                             label: chart_data,
-                            data: char_value,
+                            data: chart_value,
                             backgroundColor: [
                                 'rgba(255, 99, 132, 1)',
                                 'rgba(54, 162, 235, 1)',
@@ -326,6 +329,42 @@
                 } else {
                     temp = get_data_localstorage('A12')
                 }
+                let result = '<h2>به منظور پاسخ مجدد به سوالات بخش آگاهی برند دکمه' +
+                    'F5' +
+                    'را فشار دهید' +
+                    '</h2>'
+                options_html.fadeIn(400).html(result)
+                $('button[type=submit]').click(function () {
+                    let A1 = localStorage.getItem("A1")
+                    let A2 = localStorage.getItem("A2")
+                    let A4 = localStorage.getItem("A4")
+                    let A6 = localStorage.getItem("A6")
+                    let A7 = localStorage.getItem("A7")
+                    let A8 = localStorage.getItem("A8")
+                    let A9 = localStorage.getItem("A9")
+                    let A10 = localStorage.getItem("A10")
+                    let A11 = localStorage.getItem("A11")
+                    let A12 = localStorage.getItem("A12")
+                    $.ajax({
+                        url: '{% url 'Survey:answer_brand_questions_ajax' %}',
+                        data: {
+                            'A1': A1,
+                            'A2': A2,
+                            'A4': A4,
+                            'A6': A6,
+                            'A7': A7,
+                            'A8': A8,
+                            'A9': A9,
+                            'A10': A10,
+                            'A11': A11,
+                            'A12': A12
+                        },
+                        success: function () {
+                            console.log('we\'re going to next page...')
+                        }
+                    });
+                });
+
             }
             questions_show()
         }
@@ -463,8 +502,8 @@
                         ' </td>' +
                         '</tr>'
                 }
+                result += '</tbody></table></div>'
             }
-            result += '</tbody></table></div>'
             options_html.fadeIn(400).html(result)
             next_btn.fadeIn(400)
         }

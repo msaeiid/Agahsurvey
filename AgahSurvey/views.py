@@ -204,3 +204,8 @@ def question_list_ajax(request):
         serializer = Question_Serializer(questions, many=True)
         context = {'questions': serializer.data}
         return JsonResponse(context, status=200)
+
+
+def answer_brand_questions_ajax(request):
+    print('')
+    pass
