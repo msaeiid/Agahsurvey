@@ -351,7 +351,8 @@
                         '</label>' +
                         '</div>'
                 }
-            } else if (type == 'rest') {
+            }
+            else if (type == 'rest') {
                 for (item in data) {
                     result += '<div class="form-check">' +
                         '<label class="form-check-label" for="flexCheckDefault">' + item + '' +
@@ -359,7 +360,8 @@
                         '</label>' +
                         '</div>'
                 }
-            } else if (type == 'number') {
+            }
+            else if (type == 'number') {
                 for (item in data) {
                     result += '<div class="row">' +
                         '<label>' + item + ': ' +
@@ -367,7 +369,8 @@
                         '</label>' +
                         '</div>'
                 }
-            } else if (type == 'numberWithLimit') {
+            }
+            else if (type == 'numberWithLimit') {
                 for (item in data) {
                     result += '<div class="row">' +
                         '<label>' + item + ': ' +
@@ -375,7 +378,8 @@
                         '</label>' +
                         '</div>'
                 }
-            } else if (type == 'currency') {
+            }
+            else if (type == 'currency') {
                 for (item in data) {
                     result += '<div class="row">' +
                         '<label>' + item + ': ' +
@@ -383,7 +387,8 @@
                         '</label>' +
                         '</div>'
                 }
-            } else if (type == 'option') {
+            }
+            else if (type == 'option') {
                 result += '<h3 class="error hide">لطفا مقادیر متفاوتی را انتخاب نمایید</h3>'
                 for (item in data) {
                     result += '<div class="row">' +
@@ -394,56 +399,69 @@
                         '<option value="3">سوم</option>' +
                         '</select></label></div>'
                 }
-            } else if (type == 'radioButton') {
+            }
+            else if (type == 'radioButton') {
+                result += '<div class="table-responsive"><table class="table align-middle"' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th scope="col">برند</th>' +
+                    '<th scope="col">روزی یکبار یا بیشتر</th>' +
+                    '<th scope="col">چهار الی پنج مرتبه در هفته</th>' +
+                    '<th scope="col">دو الی سه مرتبه در هفته</th>' +
+                    '<th scope="col">یک مرتبه در هفته</th>' +
+                    '<th scope="col">دو هفته یک مرتبه</th>' +
+                    '<th scope="col">ماهی یک مرتبه</th>' +
+                    '<th scope="col">هر دو الی سه ماه یک مرتبه</th>' +
+                    '<th scope="col">هر چهار الی شش ماه یک مرتبه</th>' +
+                    '<th scope="col">کمتر</th>' +
+                    '<th scope="col">هیچوقت</th>' +
+                    '<th scope="col">نمی دانم/نمی توانم بگویم</th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>'
                 for (item in data) {
-                    result += '<h4>' + item + '</h4>'
                     result +=
-                        '<div class="form-check form-check-inline">' +
-                        '<label class="form-check-label" for="flexRadioDefault1">روزی یکبار یا بیشتر</label>' +
+                        '<tr>' +
+                        '<td scope="row">' +
+                        '<h6>' + item + '</h6>' +
+                        '</td>' +
+                        '<td>' +
                         '<input class="form-check-input" type="radio" name="' + item + '" id="flexRadioDefault1" value="1">' +
-                        ' </div>' +
-                        '<div class="form-check form-check-inline">' +
-                        '<label class="form-check-label" for="flexRadioDefault2">چهار الی پنج مرتبه در هفته</label>' +
+                        ' </td>' +
+                        '<td>' +
                         '<input class="form-check-input" type="radio" name="' + item + '" id="flexRadioDefault2" value="2">' +
-                        ' </div>' +
-                        '<div class="form-check form-check-inline">' +
-                        '<label class="form-check-label" for="flexRadioDefault3">دو الی سه مرتبه در هفته</label>' +
+                        ' </td>' +
+                        '<td>' +
                         '<input class="form-check-input" type="radio" name="' + item + '" id="flexRadioDefault3" value="3">' +
-                        ' </div>' +
-                        '<div class="form-check form-check-inline">' +
-                        '<label class="form-check-label" for="flexRadioDefault4">یک مرتبه در هفته</label>' +
+                        ' </td>' +
+                        '<td>' +
                         '<input class="form-check-input" type="radio" name="' + item + '" id="flexRadioDefault4" value="4">' +
-                        ' </div>' +
-                        '<div class="form-check form-check-inline">' +
-                        '<label class="form-check-label" for="flexRadioDefault5">دو هفته یک مرتبه</label>' +
+                        ' </td>' +
+                        '<td>' +
                         '<input class="form-check-input" type="radio" name="' + item + '" id="flexRadioDefault5" value="5">' +
-                        ' </div>' +
-                        '<div class="form-check form-check-inline">' +
-                        '<label class="form-check-label" for="flexRadioDefault6">ماهی یک مرتبه</label>' +
+                        ' </td>' +
+                        '<td>' +
                         '<input class="form-check-input" type="radio" name="' + item + '" id="flexRadioDefault6" value="6">' +
-                        ' </div>' +
-                        '<div class="form-check form-check-inline">' +
-                        '<label class="form-check-label" for="flexRadioDefault7">هر دو الی سه ماه یک مرتبه</label>' +
+                        ' </td>' +
+                        '<td>' +
                         '<input class="form-check-input" type="radio" name="' + item + '" id="flexRadioDefault7" value="7">' +
-                        ' </div>' +
-                        '<div class="form-check form-check-inline">' +
-                        '<label class="form-check-label" for="flexRadioDefault8">هر چهار الی شش ماه یک مرتبه</label>' +
+                        ' </td>' +
+                        '<td>' +
                         '<input class="form-check-input" type="radio" name="' + item + '" id="flexRadioDefault8" value="8">' +
-                        ' </div>' +
-                        '<div class="form-check form-check-inline">' +
-                        '<label class="form-check-label" for="flexRadioDefault9">کمتر</label>' +
+                        ' </td>' +
+                        '<td>' +
                         '<input class="form-check-input" type="radio" name="' + item + '" id="flexRadioDefault9" value="9">' +
-                        ' </div>' +
-                        '<div class="form-check form-check-inline">' +
-                        '<label class="form-check-label" for="flexRadioDefault10">هیچوقت</label>' +
+                        ' </td>' +
+                        '<td>' +
                         '<input class="form-check-input" type="radio" name="' + item + '" id="flexRadioDefault10" value="10">' +
-                        ' </div>' +
-                        '<div class="form-check form-check-inline">' +
-                        '<label class="form-check-label" for="flexRadioDefault11">نمی دانم/نمی توانم بگویم</label>' +
+                        ' </td>' +
+                        '<td>' +
                         '<input class="form-check-input" type="radio" name="' + item + '" id="flexRadioDefault11" value="11">' +
-                        ' </div></div>'
+                        ' </td>' +
+                        '</tr>'
                 }
             }
+            result += '</tbody></table></div>'
             options_html.fadeIn(400).html(result)
             next_btn.fadeIn(400)
         }
