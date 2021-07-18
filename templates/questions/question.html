@@ -81,9 +81,11 @@
                         '</tr>'
                 }
                 result += '</tbody></table>'
-                table_place.html(result)
+                table_place
+                table_place.html(result).fadeIn(500)
             } else {
-                table_place.html('')
+
+                table_place.html('').fadeOut(500)
             }
             let years = $('input.year')
             years.keyup(function () {
@@ -118,16 +120,15 @@
             if (this.value < 3) {
                 row_number = this.value
             }
-
             show_child(row_number)
         });
 
         let marriage_status = $('select[name=marriage_answer]')
         marriage_status.change(function () {
             if (this.value == 2 || this.value == 3 || this.value == 4) {
-                $('div .children').removeClass('hide')
+                $('div .children').fadeIn(500).removeClass('hide')
             } else {
-                $('div .children').addClass('hide')
+                $('div .children').fadeOut(500).addClass('hide')
             }
         });
 
