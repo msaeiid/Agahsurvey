@@ -209,21 +209,23 @@ def question_list_ajax(request):
 def answer_brand_questions_ajax(request):
     import json
     if request.is_ajax and request.method == 'GET':
-        answersheet=json.loads(request.GET.get("answersheet"))
+        list_data = ['A1', 'A2', 'A4', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'A12']
+        answersheet = get_object_or_404(AnswerSheet, pk=json.loads(request.GET.get("answersheet")))
         last_question = json.loads(request.GET.get("last_question"))
         first_question = json.loads(request.GET.get("first_question"))
-        A1 = json.loads(request.GET.get("A1"))
-        A2 = json.loads(request.GET.get("A2"))
-        A4 = json.loads(request.GET.get("A4"))
-        A6 = json.loads(request.GET.get("A6"))
-        A7 = json.loads(request.GET.get("A7"))
-        A8 = json.loads(request.GET.get("A8"))
-        A9 = json.loads(request.GET.get("A9"))
-        A10 = json.loads(request.GET.get("A10"))
-        A11 = json.loads(request.GET.get("A11"))
-        A12 = json.loads(request.GET.get("A12"))
+        for item in list_data:
+            question = get_object_or_404(Question, pk=first_question)
+            save(json.loads(request.GET.get(item)), question, answersheet)
+            first_question += 1
+    return redirect(reverse('Survey:sentence', args=[answersheet.pk, last_question]))
 
 
-def save(data):
+def save(data, question, answersheet):
+    for item in data:
+        answer = Answer(question_id=question.pk, answersheet_id=answersheet.pk,
+                        answer=data[item])  # data[item] pk brands...
+        answer.save()
+
+
+def sentences(request, answersheet_pk, question_pk):
     pass
-

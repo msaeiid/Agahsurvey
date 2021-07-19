@@ -13,5 +13,6 @@ urlpatterns = [
     path('question/get_age/', views.get_age_ajax, name='question_get_age'),
     path('brands_brands_list/', views.brand_list_ajax, name='brands_brands_list'),
     path('brands_questions_list/', views.question_list_ajax, name='brands_questions_list'),
-    path('brands_answer_questions/', views.answer_brand_questions_ajax, name='answer_brand_questions_ajax')
+    path('brands_answer_questions/', views.answer_brand_questions_ajax, name='answer_brand_questions_ajax'),
+    path('sentences/', views.sentences, name='sentence')
 ]
