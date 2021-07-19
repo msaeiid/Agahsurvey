@@ -14,5 +14,5 @@ urlpatterns = [
     path('brands_brands_list/', views.brand_list_ajax, name='brands_brands_list'),
     path('brands_questions_list/', views.question_list_ajax, name='brands_questions_list'),
     path('brands_answer_questions/', views.answer_brand_questions_ajax, name='answer_brand_questions_ajax'),
-    path('sentences/', views.sentences, name='sentence')
+    path('sentences/<int:answersheet_pk>/<int:question_pk>', views.sentences, name='sentence')
 ]

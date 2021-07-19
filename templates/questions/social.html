@@ -1,18 +1,10 @@
 {% extends 'questions/base.html' %}
+{% load static %}
 {% block title %}
     بخش کلاس اجتماعی
 {% endblock %}
 {% block extra_head %}
-    <style>
-        .hide {
-            display: none;
-        }
-
-        .show {
-            display: block;
-        }
-
-    </style>
+    <link href="{% static 'css/social.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block content %}
     <form method="post">
@@ -25,8 +17,10 @@
         </select>
         <h4>{{ job_question.question_title }}</h4>
         {% for item in job_question.options.all %}
-                <input name="job" type="checkbox" name="{{ item.option_title }}" value="{{ item.option_value }}">
-            <label>{{ item.option_title }}</label>
+            <div class="row">
+                <label><input name="job" type="checkbox" name="{{ item.option_title }}"
+                              value="{{ item.option_value }}">&nbsp;{{ item.option_title }}</label>
+            </div>
         {% endfor %}
         <h3 class="error hide">لطفا حداکثر 3 شغل انتخاب نمایید</h3>
         <h3>{{ region_question.question_title }}</h3>
@@ -41,20 +35,5 @@
     </form>
 {% endblock %}
 {% block js %}
-    <script type="application/javascript">
-        let radiobuttnons = $('input[type=checkbox]')
-        radiobuttnons.on('change', function (e) {
-            if ($('input[type=checkbox]:checked').length > 3) {
-                $(this).prop('checked', false);
-                $('.error').removeClass('hide')
-                $('.error').addClass('show')
-            } else {
-                $('.error').addClass('hide')
-                $('.error').removeClass('show')
-
-            }
-        });
-
-
-    </script>
+    <script src="{% static 'js/social.js' %}" type="application/javascript"></script>
 {% endblock %}
