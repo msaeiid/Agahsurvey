@@ -225,5 +225,5 @@ def answer_brand_questions_ajax(request):
 
 
 def save(data):
-
+    pass
 
