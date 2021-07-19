@@ -207,5 +207,23 @@ def question_list_ajax(request):
 
 
 def answer_brand_questions_ajax(request):
-    print('')
-    pass
+    import json
+    if request.is_ajax and request.method == 'GET':
+        answersheet=json.loads(request.GET.get("answersheet"))
+        last_question = json.loads(request.GET.get("last_question"))
+        first_question = json.loads(request.GET.get("first_question"))
+        A1 = json.loads(request.GET.get("A1"))
+        A2 = json.loads(request.GET.get("A2"))
+        A4 = json.loads(request.GET.get("A4"))
+        A6 = json.loads(request.GET.get("A6"))
+        A7 = json.loads(request.GET.get("A7"))
+        A8 = json.loads(request.GET.get("A8"))
+        A9 = json.loads(request.GET.get("A9"))
+        A10 = json.loads(request.GET.get("A10"))
+        A11 = json.loads(request.GET.get("A11"))
+        A12 = json.loads(request.GET.get("A12"))
+
+
+def save(data):
+
+
