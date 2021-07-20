@@ -233,8 +233,14 @@ def sentences(request, answersheet_pk, question_pk):
     if request.method == 'GET':
         import json
         A6 = json.loads(request.session.get('A6'))
+        pklist = list()
+        for pk in A6.values():
+            pklist.append(int(pk))
         main_question = get_object_or_404(Question, pk=question_pk)
+        A6 = Brand.objects.filter(pk__in=pklist)
+        del pklist
         last = question_pk + 8
         other_questions = get_list_or_404(Question, pk__gte=main_question.question_next_id, pk__lte=last)
-        context = {'main_question': main_question, 'other_question': other_questions, 'A6': A6,'last_question':last,'first_question':main_question.question_next_id}
+        context = {'main_question': main_question, 'other_question': other_questions, 'A6': A6, 'last_question': last,
+                   'first_question': main_question.question_next_id}
         return render(request, 'questions/sentence.html', context=context)

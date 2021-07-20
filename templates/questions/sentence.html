@@ -5,19 +5,16 @@
 {% endblock %}
 {% block extra_head %}
     <style>
-        label {
-            margin: 10px;
+        input[type=text] {
+            width: 40%;
         }
 
         h5 {
             color: blue;
         }
-        .arrow{
-            width: 100%;
+
+        .arrow {
             height: 50px;
-        }
-        .left ,.right{
-            padding-top:70px;
         }
     </style>
 {% endblock %}
@@ -30,27 +27,76 @@
     <input type="hidden" value="{{ first_question }}" name="first_question">
     <input type="hidden" value="{{ last_question }}" name="last_question">
     <div class="row">
-        <div class="left col-lg-2 col-md-2 col-sm-2 col-2">
-            <button class="arrow btn btn-lg btn-primary"><</button>
-        </div>
-        <div class="col-lg-8 col-md-8 col-sm-8 col-8">
+        <div class="col-lg-9 col-md-9 col-sm-9 col-9">
             {% for question in other_question %}
-                <div class="{% if question.pk != first_question %}hide{% endif %}" id="{{ question.pk }}">
+                <div class="questions {% if question.pk != first_question %}hide{% endif %}"
+                     id="question{{ question.pk }}">
                     <h5>{{ question }}</h5>
-                    {% for option in A6 %}
-                        <label class="form-check-label"><input value="{{ option }}" type="checkbox"
-                                                               class="form-check-input"
-                                                               id="flexCheckDisabled"> {{ option }}</label>
+                    <br>
+                    {% for brand in A6 %}
+                        <div class="row">
+                            <label class="form-check-label"><input name="{{ question.pk }}" value="{{ brand.pk }}"
+                                                                   type="checkbox" class="form-check-input"
+                                                                   id="flexCheckDisabled"> {{ brand.title }}</label>
+                        </div>
                     {% endfor %}
-                    <label class="form-check-label"><input value="99" type="checkbox" class="form-check-input"
-                                                           id="flexCheckDisabled"> هیچکدام</label>
-                    <input value="سایر" style="display: inline-block" type="text" id="flexCheckDisabled"
-                           placeholder="سایر">
+                    <div class="row">
+                        <label class="form-check-label"><input name="{{ question.pk }}" value="99" type="checkbox"
+                                                               class="form-check-input" id="flexCheckDisabled"> هیچکدام</label>
+                    </div>
+                    <div class="row">
+                        {% comment %}                        <input name="{{ question.pk }}" style="display: inline-block" type="text" id="flexCheckDisabled"
+                               placeholder="سایر">{% endcomment %}
+                    </div>
                 </div>
             {% endfor %}
         </div>
-        <div class="right col-lg-2 col-md-2 col-sm-2 col-2">
-            <button class="arrow btn btn-lg btn-primary">></button>
-        </div>
     </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-1 col-md-1 col-sm-1 col-1"></div>
+        <button class="arrow btn btn-lg btn-primary col-lg-4 col-md-4 col-sm-4 col-4" id="previous">قبلی</button>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-2"></div>
+        <button class="arrow btn btn-lg btn-primary col-lg-4 col-md-4 col-sm-4 col-4" id="next">بعدی</button>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        let previous_btn = $('#previous')
+        let next_btn = $('#next')
+        let current_question = parseInt($('input[name=first_question]').val())
+        let first_question = parseInt($('input[name=first_question]').val())
+        let last_question = parseInt($('input[name=last_question]').val())
+        previous_btn.click(function () {
+            if (current_question == first_question) {
+                current_question = last_question
+            } else {
+                current_question -= 1
+            }
+            show_question()
+        })
+        next_btn.click(function () {
+            if (current_question == last_question) {
+                current_question = first_question
+            } else {
+                current_question += 1
+            }
+            show_question()
+        })
+
+        function show_question() {
+            query = '#question' + current_question
+            $('.questions').addClass('hide')
+            $(query).removeClass('hide')
+        }
+
+        $('input[type=checkbox]').click(function () {
+            if (this.value == 99) {
+                $('input[type=checkbox][name=' + this.name + ']').prop('checked', false)
+                $(this).prop('checked', true)
+            } else if (this.value != 99) {
+                $('input[name=' + this.name + '][value=99]').prop('checked', false)
+            }
+        });
+    </script>
 {% endblock %}
