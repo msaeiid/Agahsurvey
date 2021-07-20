@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
 from django.urls import reverse
 
 from AgahSurvey.forms import ResponderForm, InterviewerForm, AnswerSheetForm
@@ -212,12 +212,14 @@ def answer_brand_questions_ajax(request):
         list_data = ['A1', 'A2', 'A4', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'A12']
         answersheet = get_object_or_404(AnswerSheet, pk=json.loads(request.GET.get("answersheet")))
         last_question = json.loads(request.GET.get("last_question"))
+        last_question = get_object_or_404(Question, pk=last_question)
         first_question = json.loads(request.GET.get("first_question"))
         for item in list_data:
             question = get_object_or_404(Question, pk=first_question)
             save(json.loads(request.GET.get(item)), question, answersheet)
             first_question += 1
-    return redirect(reverse('Survey:sentence', args=[answersheet.pk, last_question]))
+        request.session["A6"] = request.GET.get('A6')
+    return redirect(reverse('Survey:sentence', args=[answersheet.pk, last_question.question_next_id]))
 
 
 def save(data, question, answersheet):
@@ -228,4 +230,11 @@ def save(data, question, answersheet):
 
 
 def sentences(request, answersheet_pk, question_pk):
-    pass
+    if request.method == 'GET':
+        import json
+        A6 = json.loads(request.session.get('A6'))
+        main_question = get_object_or_404(Question, pk=question_pk)
+        last = question_pk + 8
+        other_questions = get_list_or_404(Question, pk__gte=main_question.question_next_id, pk__lte=last)
+        context = {'main_question': main_question, 'other_question': other_questions, 'A6': A6,'last_question':last,'first_question':main_question.question_next_id}
+        return render(request, 'questions/sentence.html', context=context)

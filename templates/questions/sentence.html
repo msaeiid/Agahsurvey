@@ -1,0 +1,56 @@
+{% extends 'questions/base.html' %}
+{% load static %}
+{% block title %}
+    بخش جملات
+{% endblock %}
+{% block extra_head %}
+    <style>
+        label {
+            margin: 10px;
+        }
+
+        h5 {
+            color: blue;
+        }
+        .arrow{
+            width: 100%;
+            height: 50px;
+        }
+        .left ,.right{
+            padding-top:70px;
+        }
+    </style>
+{% endblock %}
+{% block welcome %}
+    <div class="row">
+        <h4>{{ main_question }}</h4>
+    </div>
+{% endblock %}
+{% block content %}
+    <input type="hidden" value="{{ first_question }}" name="first_question">
+    <input type="hidden" value="{{ last_question }}" name="last_question">
+    <div class="row">
+        <div class="left col-lg-2 col-md-2 col-sm-2 col-2">
+            <button class="arrow btn btn-lg btn-primary"><</button>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-8">
+            {% for question in other_question %}
+                <div class="{% if question.pk != first_question %}hide{% endif %}" id="{{ question.pk }}">
+                    <h5>{{ question }}</h5>
+                    {% for option in A6 %}
+                        <label class="form-check-label"><input value="{{ option }}" type="checkbox"
+                                                               class="form-check-input"
+                                                               id="flexCheckDisabled"> {{ option }}</label>
+                    {% endfor %}
+                    <label class="form-check-label"><input value="99" type="checkbox" class="form-check-input"
+                                                           id="flexCheckDisabled"> هیچکدام</label>
+                    <input value="سایر" style="display: inline-block" type="text" id="flexCheckDisabled"
+                           placeholder="سایر">
+                </div>
+            {% endfor %}
+        </div>
+        <div class="right col-lg-2 col-md-2 col-sm-2 col-2">
+            <button class="arrow btn btn-lg btn-primary">></button>
+        </div>
+    </div>
+{% endblock %}
