@@ -4,19 +4,7 @@
     بخش جملات
 {% endblock %}
 {% block extra_head %}
-    <style>
-        input[type=text] {
-            width: 40%;
-        }
-
-        h5 {
-            color: blue;
-        }
-
-        .arrow {
-            height: 50px;
-        }
-    </style>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/sentence.css' %}">
 {% endblock %}
 {% block welcome %}
     <div class="row">
@@ -52,7 +40,6 @@
             {% endfor %}
         </div>
     </div>
-    <br>
     <div class="row">
         <div class="col-lg-1 col-md-1 col-sm-1 col-1"></div>
         <button class="arrow btn btn-lg btn-primary col-lg-4 col-md-4 col-sm-4 col-4" id="previous">قبلی</button>
@@ -61,42 +48,5 @@
     </div>
 {% endblock %}
 {% block js %}
-    <script>
-        let previous_btn = $('#previous')
-        let next_btn = $('#next')
-        let current_question = parseInt($('input[name=first_question]').val())
-        let first_question = parseInt($('input[name=first_question]').val())
-        let last_question = parseInt($('input[name=last_question]').val())
-        previous_btn.click(function () {
-            if (current_question == first_question) {
-                current_question = last_question
-            } else {
-                current_question -= 1
-            }
-            show_question()
-        })
-        next_btn.click(function () {
-            if (current_question == last_question) {
-                current_question = first_question
-            } else {
-                current_question += 1
-            }
-            show_question()
-        })
-
-        function show_question() {
-            query = '#question' + current_question
-            $('.questions').addClass('hide')
-            $(query).removeClass('hide')
-        }
-
-        $('input[type=checkbox]').click(function () {
-            if (this.value == 99) {
-                $('input[type=checkbox][name=' + this.name + ']').prop('checked', false)
-                $(this).prop('checked', true)
-            } else if (this.value != 99) {
-                $('input[name=' + this.name + '][value=99]').prop('checked', false)
-            }
-        });
-    </script>
+    <script type="application/javascript" rel="script" src="{% static 'js/sentence.js' %}"></script>
 {% endblock %}
