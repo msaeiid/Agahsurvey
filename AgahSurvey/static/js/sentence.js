@@ -19,6 +19,27 @@ next_btn.click(function () {
     }
     show_question()
 })
+let controller = {}
+$(document).ready(function () {
+    for (var i = first_question; i <= last_question; i++) {
+        controller[i] = false
+    }
+})
+
+$('input[type=checkbox]').on("change", function (event) {
+    if (this.checked) {
+        controller[this.name] = true
+    }
+    var result = true
+    for (var item in controller) {
+        if (controller[item] ==false){
+            result=false
+        }
+    }
+    if(result == true){
+        $('#submit').removeClass('hide')
+    }
+});
 
 function show_question() {
     query = '#question' + current_question

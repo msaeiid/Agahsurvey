@@ -172,8 +172,8 @@ def Brand_View(request, answersheet_pk, question_pk):
                    }
         return render(request, 'questions/brand.html', context=context)
     else:
-        question=Question.objects.get(pk=request.POST.get('last_question'))
-        return redirect(reverse('Survey:sentence', args=[answersheet_pk,question.question_next.pk ]))
+        question = Question.objects.get(pk=request.POST.get('last_question'))
+        return redirect(reverse('Survey:sentence', args=[answersheet_pk, question.question_next.pk]))
 
 
 def option_list_ajax(request):
@@ -261,5 +261,14 @@ def sentences(request, answersheet_pk, question_pk):
                    'first_question': main_question.question_next_id}
         return render(request, 'questions/sentence.html', context=context)
     else:
-        print('')
-        pass
+        answersheet = get_object_or_404(AnswerSheet, pk=answersheet_pk)
+        first_question = int(request.POST.get('first_question'))
+        last_question = int(request.POST.get('last_question'))
+        answers = dict(request.POST)
+        for i in range(first_question, last_question + 1):
+            question = get_object_or_404(Question, pk=i)
+            for option in answers[str(i)]:
+                answer = Answer(answer=int(option), answersheet=answersheet,
+                                question=question)
+                answer.save()
+        return render(request, 'questions/end.html')

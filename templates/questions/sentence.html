@@ -12,40 +12,54 @@
     </div>
 {% endblock %}
 {% block content %}
-    <input type="hidden" value="{{ first_question }}" name="first_question">
-    <input type="hidden" value="{{ last_question }}" name="last_question">
-    <div class="row">
-        <div class="col-lg-9 col-md-9 col-sm-9 col-9">
-            {% for question in other_question %}
-                <div class="questions {% if question.pk != first_question %}hide{% endif %}"
-                     id="question{{ question.pk }}">
-                    <h5>{{ question }}</h5>
-                    <br>
-                    {% for brand in A6 %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{ first_question }}" name="first_question">
+        <input type="hidden" value="{{ last_question }}" name="last_question">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-9">
+                {% for question in other_question %}
+                    <div class="questions {% if question.pk != first_question %}hide{% endif %}"
+                         id="question{{ question.pk }}">
+                        <h5>{{ question }}</h5>
+                        <br>
+                        {% for brand in A6 %}
+                            <div class="row">
+                                <label class="form-check-label"><input name="{{ question.pk }}"
+                                                                       value="{{ brand.option_value }}"
+                                                                       type="checkbox" class="form-check-input"
+                                                                       id="flexCheckDisabled"> {{ brand.option_title }}
+                                </label>
+                            </div>
+                        {% endfor %}
                         <div class="row">
-                            <label class="form-check-label"><input name="{{ question.pk }}" value="{{ brand.option_value }}"
-                                                                   type="checkbox" class="form-check-input"
-                                                                   id="flexCheckDisabled"> {{ brand.option_title }}</label>
+                            <label class="form-check-label"><input name="{{ question.pk }}" value="99" type="checkbox"
+                                                                   class="form-check-input" id="flexCheckDisabled">
+                                هیچکدام</label>
                         </div>
-                    {% endfor %}
-                    <div class="row">
-                        <label class="form-check-label"><input name="{{ question.pk }}" value="99" type="checkbox"
-                                                               class="form-check-input" id="flexCheckDisabled"> هیچکدام</label>
-                    </div>
-                    <div class="row">
-                        {% comment %}                        <input name="{{ question.pk }}" style="display: inline-block" type="text" id="flexCheckDisabled"
+                        <div class="row">
+                            {% comment %}                        <input name="{{ question.pk }}" style="display: inline-block" type="text" id="flexCheckDisabled"
                                placeholder="سایر">{% endcomment %}
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-1 col-md-1 col-sm-1 col-1"></div>
-        <button class="arrow btn btn-lg btn-primary col-lg-4 col-md-4 col-sm-4 col-4" id="previous">قبلی</button>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-2"></div>
-        <button class="arrow btn btn-lg btn-primary col-lg-4 col-md-4 col-sm-4 col-4" id="next">بعدی</button>
-    </div>
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-1"></div>
+            <button type="button" class="arrow btn btn-lg btn-primary col-lg-4 col-md-4 col-sm-4 col-4" id="previous">
+                قبلی
+            </button>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-2"></div>
+            <button type="button" class="arrow btn btn-lg btn-primary col-lg-4 col-md-4 col-sm-4 col-4" id="next">بعدی
+            </button>
+        </div>
+        <br>
+        <div class="row">
+            <input value="تایید و اتمام نظرسنجی" id="submit" type="submit"
+                   class="text-center btn btn-success col-lg-6 col-md-6 col-sm-12 col-12 hide">
+        </div>
+    </form>
 {% endblock %}
 {% block js %}
     <script type="application/javascript" rel="script" src="{% static 'js/sentence.js' %}"></script>
