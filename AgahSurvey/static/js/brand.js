@@ -343,7 +343,7 @@ function question_management(next_or_previous, answer = undefined) {
                     'A12': A12,
                 },
                 success: function () {
-                    console.log('we\'re going to next page...')
+                    $('form').submit();
                 }
             });
         });
@@ -375,7 +375,6 @@ function options_show(data, type) {
     let result = ''
     let counter = 0
     if (type == 'brands') {
-        console.log(data)
         for (var item in data) {
             result += '<div class="form-check">' +
                 '<label class="form-check-label" for="flexCheckDefault">' + data[item].option_title + '' +

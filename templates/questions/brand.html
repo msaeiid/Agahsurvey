@@ -7,20 +7,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.1/chart.min.js"></script>
 {% endblock %}
 {% block content %}
-    <input type="hidden" value="{{ answersheet }}" name="answersheet">
-    <input type="hidden" value="{{ last_question }}" name="last_question">
-    <input type="hidden" value="{{ first_question }}" name="first_question">
-    <h4>
-        <div class="questions" id="questions">
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{ answersheet }}" name="answersheet">
+        <input type="hidden" value="{{ last_question }}" name="last_question">
+        <input type="hidden" value="{{ first_question }}" name="first_question">
+        <h4>
+            <div class="questions" id="questions">
+            </div>
+        </h4>
+        <br>
+        <div class="options" id="options">
         </div>
-    </h4>
-    <br>
-    <div class="options" id="options">
-    </div>
-    <br>
-    <button type="button" id="previous_btn" class="hide btn btn-primary btn-lg">قبل</button>
-    <button type="button" id="next_btn" class="btn btn-primary btn-lg">بعد</button>
-    <button type="submit" class="hide btn btn-primary btn-lg" id="submit">ارسال پاسخ و رفتن به مرحله آخر</button>
+        <br>
+        <button type="button" id="previous_btn" class="hide btn btn-primary btn-lg">قبل</button>
+        <button type="button" id="next_btn" class="btn btn-primary btn-lg">بعد</button>
+        <button type="submit" class="hide btn btn-primary btn-lg" id="submit">ارسال پاسخ و رفتن به مرحله آخر</button>
+    </form>
 {% endblock %}
 {% block js %}
     <script type="application/javascript" src="{% static 'js/brand.js' %}"></script>

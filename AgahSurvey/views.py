@@ -171,6 +171,8 @@ def Brand_View(request, answersheet_pk, question_pk):
                    'first_question': questions.first().pk,
                    }
         return render(request, 'questions/brand.html', context=context)
+    else:
+        return redirect(reverse('Survey:sentence', args=[answersheet_pk, request.POST.get('last_question')]))
 
 
 def option_list_ajax(request):
@@ -233,7 +235,6 @@ def answer_brand_questions_ajax(request):
             save(json.loads(request.GET.get(item)), question, answersheet)
             first_question += 1
         request.session["A6"] = request.GET.get('A6')
-    return redirect(reverse('Survey:sentence', args=[answersheet.pk, last_question.question_next_id]))
 
 
 def save(data, question, answersheet):
