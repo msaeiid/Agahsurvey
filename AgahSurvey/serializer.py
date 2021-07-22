@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from AgahSurvey.models import Brand, Question
+from AgahSurvey.models import Question, Option
 
 
 class Brand_Serializer(serializers.ModelSerializer):
     class Meta:
-        model = Brand
-        fields = ['pk', 'title', 'image']
+        model = Option
+        fields = ['option_value', 'option_title']
 
 
 class Question_Serializer(serializers.ModelSerializer):

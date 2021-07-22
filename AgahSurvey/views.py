@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 from django.urls import reverse
 
 from AgahSurvey.forms import ResponderForm, InterviewerForm, AnswerSheetForm
-from AgahSurvey.models import Survey, Interviewer, AnswerSheet, Answer, Question, Child, Brand
+from AgahSurvey.models import Survey, Interviewer, AnswerSheet, Answer, Question, Child, Option
 from AgahSurvey.serializer import Brand_Serializer, Question_Serializer
 
 
@@ -116,8 +116,10 @@ def Personal_Question_View(request, answersheet_pk):
                     children(request.POST, int(children_answer), answersheet.responser.pk)
             except:
                 children_answer = 0
-            marriage_answer = Answer(answer=marriage_answer, question=marriage_question, answersheet=answersheet)
-            age_answer = Answer(answer=age_answer, question=age_question, answersheet=answersheet)
+            marriage_answer = Answer(question=marriage_question, answersheet=answersheet,
+                                     option=marriage_question.options.get(option_value=int(marriage_answer)))
+            age_answer = Answer(option=age_question.options.get(option_value=age_answer), question=age_question,
+                                answersheet=answersheet)
             children_answer = Answer(answer=children_answer, question=children_question, answersheet=answersheet)
             marriage_answer.save()
             age_answer.save()
@@ -139,14 +141,25 @@ def Social_class(request, answersheet_pk, question_pk):
         context = {'home_question': home_question, 'job_question': job_question, 'region_question': region_question,
                    'region': region}
     else:
-        home_answer = Answer(question=home_question, answer=request.POST.get('home'), answersheet=answersheet)
-        region_answer = Answer(question=region_question, answer=request.POST.get('region'), answersheet=answersheet)
-        job_answer = Answer(question=job_question, answer=int(request.POST.get('job')), answersheet=answersheet)
+        home_answer = Answer(question=home_question,
+                             option=home_question.options.get(option_value=int(request.POST.get('home'))),
+                             answersheet=answersheet,
+                             point=home_question.options.get(option_value=int(request.POST.get('home'))).option_point)
+        region_answer = Answer(question=region_question,
+                               answer=region_question.regions.get(region_value=int(request.POST.get('region')),
+                                                                  city=answersheet.responser.city).region_value,
+                               answersheet=answersheet,
+                               point=region_question.regions.get(region_value=int(request.POST.get('region')),
+                                                                 city=answersheet.responser.city).region_point)
+        job_answer = Answer(question=job_question,
+                            option=job_question.options.get(option_value=int(request.POST.get('job'))),
+                            point=job_question.options.get(option_value=int(request.POST.get('job'))).option_point,
+                            answersheet=answersheet)
         home_answer.save()
         job_answer.save()
         region_answer.save()
         answersheet.calculate_total_point()
-        return redirect(reverse('Survey:brand', args=[answersheet.pk, region_answer.question_next.pk]))
+        return redirect(reverse('Survey:brand', args=[answersheet.pk, region_question.question_next.pk]))
     return render(request, 'questions/social.html', context=context)
 
 
@@ -160,11 +173,12 @@ def Brand_View(request, answersheet_pk, question_pk):
         return render(request, 'questions/brand.html', context=context)
 
 
-def brand_list_ajax(request):
+def option_list_ajax(request):
     if request.method == 'GET' and request.is_ajax:
-        brands = Brand.objects.all()
-        serializer = Brand_Serializer(brands, many=True)
-        context = {'brands': serializer.data}
+        question = get_object_or_404(Question, pk=int(request.GET.get('first_question')))
+        options = question.options.all()
+        serializer = Brand_Serializer(options, many=True)
+        context = {'options': serializer.data}
         return JsonResponse(context, safe=True, status=200)
 
 
@@ -224,8 +238,8 @@ def answer_brand_questions_ajax(request):
 
 def save(data, question, answersheet):
     for item in data:
-        answer = Answer(question_id=question.pk, answersheet_id=answersheet.pk,
-                        answer=data[item])  # data[item] pk brands...
+        answer = Answer(question=question, answersheet=answersheet, answer=data[item],
+                        option=Option.objects.get(option_title=item))
         answer.save()
 
 
@@ -234,10 +248,10 @@ def sentences(request, answersheet_pk, question_pk):
         import json
         A6 = json.loads(request.session.get('A6'))
         pklist = list()
-        for pk in A6.values():
-            pklist.append(int(pk))
+        for item in A6.keys():
+            pklist.append(item)
         main_question = get_object_or_404(Question, pk=question_pk)
-        A6 = Brand.objects.filter(pk__in=pklist)
+        A6 = Option.objects.filter(option_title__in=pklist)
         del pklist
         last = question_pk + 8
         other_questions = get_list_or_404(Question, pk__gte=main_question.question_next_id, pk__lte=last)

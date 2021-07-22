@@ -133,16 +133,6 @@ class Question(models.Model):
     def __str__(self):
         return f'{self.question_title}'
 
-    def get_point(self, value):
-        if not len(self.regions.all()):
-            try:
-                temp = self.options.get(option_value=value).option_point
-            except:
-                temp = 0
-            return temp
-        else:
-            return self.regions.filter(region_value=value).first().region_point
-
 
 class Option(models.Model):
     class Meta:
@@ -177,7 +167,7 @@ class AnswerSheet(models.Model):
     social_class = models.CharField(verbose_name='کلاس اجتماعی', max_length=1, editable=False)
 
     def calculate_total_point(self):
-        temp = [p.get_point() for p in self.answers.all()]
+        temp = [p.point for p in self.answers.all()]
         self.answersheet_total_point = sum(temp)
         if self.responser.city.is_important:
             if 15 <= self.answersheet_total_point:
@@ -205,21 +195,6 @@ class Answer(models.Model):
     question = models.ForeignKey(verbose_name='پرسش', to=Question, on_delete=models.CASCADE)
     answersheet = models.ForeignKey(verbose_name='پاسخنامه', to=AnswerSheet, related_name='answers',
                                     on_delete=models.CASCADE)
-    answer = models.CharField(verbose_name='پاسخ', max_length=10)
-
-    def get_point(self):
-        return self.question.get_point(self.answer)
-
-
-class Brand(models.Model):
-    class Meta:
-        verbose_name = 'برند'
-        verbose_name_plural = 'برند'
-        ordering=['pk']
-
-    title = models.CharField(verbose_name='نام', max_length=100,editable=True)
-    question = models.ForeignKey(verbose_name='پرسش', on_delete=models.CASCADE, related_name='brands', to=Question)
-    image = models.ImageField(verbose_name='تصویر', upload_to='brand/', editable=True, blank=True, null=True)
-
-    def __str__(self):
-        return self.title
+    answer = models.CharField(verbose_name='پاسخ', max_length=10, default=None, null=True, blank=True)
+    point = models.PositiveSmallIntegerField(verbose_name='امتیاز', editable=False, null=False, blank=False,default=0)
+    option = models.ForeignKey(verbose_name='گزینه', on_delete=models.CASCADE, to=Option, null=True, blank=True)

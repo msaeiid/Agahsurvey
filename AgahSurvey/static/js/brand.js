@@ -12,11 +12,13 @@ $(document).ready(function () {
 });
 
 function fetch_data_from_server() {
+    let serialized_current=$($('input[name=first_question]')).serialize()
     $.ajax({
         url: '/survey/brands_brands_list/',
         dataType: "json",
+        data:serialized_current,
         success: function (response) {
-            localStorage.setItem('brands', JSON.stringify(response))
+            localStorage.setItem('options', JSON.stringify(response))
         }
     });
     let data = {'first_question': first_question}
@@ -89,7 +91,7 @@ function question_management(next_or_previous, answer = undefined) {
         if (next_or_previous == 'previous') {
             fetch_data_from_server()
         }
-        let brands = JSON.parse(localStorage.brands).brands
+        let brands = JSON.parse(localStorage.options).options
         options_show(brands, 'brands')
         let radiobuttnons = $('input[type=checkbox]')
         radiobuttnons.on('change', function (e) {
@@ -98,7 +100,8 @@ function question_management(next_or_previous, answer = undefined) {
                 alert('لطفا فقط یک برند را انتخاب کنید')
             }
         });
-    } else if (current_question == 9) {
+    } 
+    else if (current_question == 9) {
         //question9
         let temp
         if (next_or_previous == 'next') {
@@ -106,7 +109,7 @@ function question_management(next_or_previous, answer = undefined) {
         } else {
             temp = get_data_localstorage('A1')
         }
-        let brands = JSON.parse(localStorage.brands).brands
+        let brands = JSON.parse(localStorage.options).options
         if (answer != 99) {
             let index
             for (var key in temp) {
@@ -121,7 +124,8 @@ function question_management(next_or_previous, answer = undefined) {
             }
         }
         options_show(brands, 'brands')
-    } else if (current_question == 10) {
+    } 
+    else if (current_question == 10) {
         //question10
         let temp
         if (next_or_previous == 'next') {
@@ -371,10 +375,11 @@ function options_show(data, type) {
     let result = ''
     let counter = 0
     if (type == 'brands') {
-        for (var i = 0; i < data.length; i++) {
+        console.log(data)
+        for (var item in data) {
             result += '<div class="form-check">' +
-                '<label class="form-check-label" for="flexCheckDefault">' + data[i].title + '' +
-                '<input class="form-check-input" type="checkbox" value="' + data[i].pk + '" name="' + data[i].title + '" id="flexCheckDefault">' +
+                '<label class="form-check-label" for="flexCheckDefault">' + data[item].option_title + '' +
+                '<input class="form-check-input" type="checkbox" value="' + data[item].option_value + '" name="' + data[item].option_title + '" id="flexCheckDefault">' +
                 '</label>' +
                 '</div>'
         }

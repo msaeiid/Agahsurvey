@@ -23,9 +23,9 @@
                     <br>
                     {% for brand in A6 %}
                         <div class="row">
-                            <label class="form-check-label"><input name="{{ question.pk }}" value="{{ brand.pk }}"
+                            <label class="form-check-label"><input name="{{ question.pk }}" value="{{ brand.option_value }}"
                                                                    type="checkbox" class="form-check-input"
-                                                                   id="flexCheckDisabled"> {{ brand.title }}</label>
+                                                                   id="flexCheckDisabled"> {{ brand.option_title }}</label>
                         </div>
                     {% endfor %}
                     <div class="row">
