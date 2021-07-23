@@ -15,7 +15,7 @@ class InterviewerForm(forms.ModelForm):
                                                                   message='تعداد ارقام میبایست حداقل و حداکثر 5 رقم باشند')])
     interviewer_name = forms.CharField(label='نام پرسشگر', max_length=100,
                                        widget=forms.TextInput(
-                                           attrs={'class': 'interviewer_name', 'disabled': '',
+                                           attrs={'class': 'interviewer_name', 'readonly': '',
                                                   'placeholder': 'نام پرسشگر'}),
                                        validators=[
                                            RegexValidator(regex='[ آابپتسجچحخدذرزسشصضطظعغفقکلمنوهی]+',
@@ -59,7 +59,7 @@ class AnswerSheetForm(forms.ModelForm):
     #     attrs={'class': 'date', 'placeholder': 'تاریخ مصاحبه'}))
     answersheet_day = forms.CharField(label='روز هفته', max_length=20,
                                       widget=forms.TextInput(
-                                          attrs={'class': 'day', 'disabled': '',
+                                          attrs={'class': 'day', 'readonly': '',
                                                  'placeholder': 'روز مصاحبه'}), )
 
     class Meta:
