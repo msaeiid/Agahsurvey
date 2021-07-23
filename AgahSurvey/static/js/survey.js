@@ -30,3 +30,8 @@ $('input[name=responder_mobile]').keyup(function () {
         }
     }
 })
+
+
+$('input[name=answersheet_date]').change(function (){
+    console.log('date i changed...')
+})

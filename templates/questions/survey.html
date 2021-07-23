@@ -1,4 +1,5 @@
 {% extends 'questions/base.html' %}
+{% load jalali_tags %}
 {% load static %}
 {% block title %}
     پرسشنامه
@@ -7,18 +8,18 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-    <i class="fas fa-user fa-3x"></i>
+        <i class="fas fa-user fa-3x"></i>
         {% for element in responder_form %}
             {{ element }}
         {% endfor %}
-    <i class="fas fa-poll-h fa-3x"></i>
+        <i class="fas fa-poll-h fa-3x"></i>
         {% for element in answerSheet_form %}
             {{ element }}
         {% endfor %}
         <div class="hide error interviewer_code_error"><i class="fas fa-exclamation"></i>
             مقدار وارد شده در کد پرسگر نا معتبر است
         </div>
-    <i class="fas fa-user-tie fa-3x"></i>
+        <i class="fas fa-user-tie fa-3x"></i>
         {% for element in interviewer_form %}
             {{ element }}
         {% endfor %}
@@ -26,6 +27,15 @@
             ادامه
         </button>
     </form>
+
+
+    <!-- By default, Datepicker using jQuery, you need to set your script after loading jQuery! -->
+    <!-- loading directly -->
+    <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+    <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+    <!-- OR -->
+    <!-- loading by form (if used AdminJalaliDateWidget) -->
+    {{ form.media }}
 {% endblock %}
 {% block js %}
     <script type="application/javascript" src="{% static 'js/survey.js' %}"></script>

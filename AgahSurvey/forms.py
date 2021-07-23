@@ -1,5 +1,7 @@
 from django import forms
 from django.core.validators import RegexValidator
+from jalali_date.fields import JalaliDateField
+from jalali_date.widgets import AdminJalaliDateWidget
 
 from AgahSurvey.models import Interviewer, Responder, AnswerSheet
 
@@ -13,7 +15,8 @@ class InterviewerForm(forms.ModelForm):
                                                                   message='تعداد ارقام میبایست حداقل و حداکثر 5 رقم باشند')])
     interviewer_name = forms.CharField(label='نام پرسشگر', max_length=100,
                                        widget=forms.TextInput(
-                                           attrs={'class': 'interviewer_name', 'disabled': '', 'placeholder': 'نام پرسشگر'}),
+                                           attrs={'class': 'interviewer_name', 'disabled': '',
+                                                  'placeholder': 'نام پرسشگر'}),
                                        validators=[
                                            RegexValidator(regex='[ آابپتسجچحخدذرزسشصضطظعغفقکلمنوهی]+',
                                                           message='لطفا از زبان فارسی استفاده نمایید')])
@@ -52,8 +55,8 @@ class ResponderForm(forms.ModelForm):
 
 
 class AnswerSheetForm(forms.ModelForm):
-    answersheet_date = forms.CharField(label='تاریخ مصاحبه', widget=forms.TextInput(
-        attrs={'class': 'date', 'placeholder': 'تاریخ مصاحبه'}))
+    # answersheet_date = forms.CharField(label='تاریخ مصاحبه', widget=forms.SelectDateWidget(
+    #     attrs={'class': 'date', 'placeholder': 'تاریخ مصاحبه'}))
     answersheet_day = forms.CharField(label='روز هفته', max_length=20,
                                       widget=forms.TextInput(
                                           attrs={'class': 'day', 'disabled': '',
@@ -62,3 +65,7 @@ class AnswerSheetForm(forms.ModelForm):
     class Meta:
         model = AnswerSheet
         fields = ('answersheet_date', 'answersheet_day',)
+
+    def __init__(self,*args,**kwargs):
+        super(AnswerSheetForm, self).__init__(*args,**kwargs)
+        self.fields['answersheet_date'] = JalaliDateField(label='تاریخ مصاحبه', widget=AdminJalaliDateWidget)
