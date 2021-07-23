@@ -7,13 +7,12 @@ interviewer_code.keyup(function () {
             url: '/survey/interviewer/get_name/',
             data: serializedData,
             success: function (response) {
-                let text = JSON.stringify(response['name'])
-                $('.interviewer_name').val(JSON.stringify(response['name']))
+                $('.interviewer_name').val(response['name'])
             },
             error: function (response) {
                 console.log('error')
                 alert(response["responseJSON"]["error"]);
-                //$('.interviewer_name').val(JSON.stringify(response['error']))
+                $('.interviewer_name').val('')
             }
         });
     } else {
