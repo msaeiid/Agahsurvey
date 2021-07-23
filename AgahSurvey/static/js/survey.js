@@ -19,3 +19,14 @@ interviewer_code.keyup(function () {
         $('.interviewer_code_error').removeClass('hide')
     }
 })
+
+$('input[name=responder_mobile]').keyup(function () {
+    if (this.value.length >= 2) {
+        let temp = this.value.toString().split('').map(iNum => parseInt(iNum, 10));
+        console.log(typeof (temp[0]), typeof (temp[1]))
+        if (temp[0] != 0 || temp[1] != 9) {
+            alert('شماره موبایل وارد شده نا معتبر است')
+            $('input[name=responder_mobile]').val('')
+        }
+    }
+})
