@@ -8,7 +8,8 @@
 {% endblock %}
 {% block welcome %}
     <div class="custom_container">
-        <h4> {{ AmOrPm }}
+        <h4><i class="fas fa-bell"></i>
+            {{ AmOrPm }}
             بخیر من
             {{ Who_is }}
             از شرکت تحقیقات بازار آگاه هستم. ما در حال انجام پژوهشی در مورد
@@ -22,23 +23,31 @@
     <div class="custom_container">
         <form method="post">
             {% csrf_token %}
-            <h4>{{ age_question.question_title }}</h4>
+            <h4><i class="fas fa-birthday-cake"></i>
+                {{ age_question.question_title }}
+            </h4>
             <input type="text" name="age_answer" placeholder="{{ age_question.question_title }}">
-            <h4>{{ marriage_question.question_title }}</h4>
+            <h4><i class="fas fa-ring"></i>
+                {{ marriage_question.question_title }}
+            </h4>
             <select name="marriage_answer">
                 {% for option in marriage_question.options.all %}
                     <option value="{{ option.option_value }}">{{ option.option_title }} </option>
                 {% endfor %}
             </select>
             <div class="children hide">
-                <h4>{{ children_question.question_title }}</h4>
+                <h4><i class="fas fa-child"></i>
+                    {{ children_question.question_title }}
+                </h4>
                 <input type="text" class="child" name="children_answer"
                        placeholder="{{ children_question.question_title }}">
                 <div class="table_place">
 
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary btn-lg">ادامه</button>
+            <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-chevron-circle-left"></i>
+                ادامه
+            </button>
         </form>
     </div>
 {% endblock %}

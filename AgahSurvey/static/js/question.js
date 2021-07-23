@@ -3,9 +3,9 @@ const child = $('.child')
 function show_child(number_of_child) {
     let table_place = $('.table_place')
     if (number_of_child > 0) {
-        result = '<table style="border: none" class="table"><thead><tr><th>فرزند</th><th>جنسیت</th><th>سال تولد</th><th>محاسبه سن اتومات</th></tr></thead><tbody>'
+        result = '<table class="table table-borderless"><thead><tr><th scope="col">فرزند</th><th scope="col"> جنسیت</th><th scope="col">سال تولد</th><th scope="col">محاسبه سن اتومات</th></tr></thead><tbody>'
         for (let i = 1; i <= number_of_child; i++) {
-            result += '<tr><td>' + i + '</td>' +
+            result += '<tr scope="row"><td>' + i + '</td>' +
                 '<td><select class="form-select" name="gender_' + i + '"><option value="male">پسر</option><option value="female">دختر</option></select></td>' +
                 '<td><input type="number" class="year form-control" name="year_' + i + '" placeholder="سال تولد" maxlength="4"></td>' +
                 '<td><input class="form-control" type="text" name="age_' + i + '" disabled></td>' +

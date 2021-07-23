@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from AgahSurvey.models import City, Responder, Interviewer, Question, Survey, AnswerSheet, Option, Answer, Region, \
-    Child
+    Child, Limit
 
 
 class AnswerSheetCustom(admin.ModelAdmin):
@@ -52,6 +52,9 @@ class ChildCustom(admin.ModelAdmin):
     list_editable = ('child_gender', 'child_birthday_year',)
 
 
+class LimitCustom(admin.ModelAdmin):
+    list_display = ('marital_status', 'age', 'maximum', 'capacity',)
+
 
 admin.site.register(City, CityCustom)
 admin.site.register(Interviewer, InterviewerCustom)
@@ -63,5 +66,6 @@ admin.site.register(Option, OptionCustom)
 admin.site.register(Answer, AnswerCustom)
 admin.site.register(Region, RegionCustom)
 admin.site.register(Child, ChildCustom)
+admin.site.register(Limit, LimitCustom)
 
 # Register your models here.

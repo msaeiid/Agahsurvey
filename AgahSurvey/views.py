@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 from django.urls import reverse
 
 from AgahSurvey.forms import ResponderForm, InterviewerForm, AnswerSheetForm
-from AgahSurvey.models import Survey, Interviewer, AnswerSheet, Answer, Question, Child, Option
+from AgahSurvey.models import Survey, Interviewer, AnswerSheet, Answer, Question, Child, Option, Limit
 from AgahSurvey.serializer import Brand_Serializer, Question_Serializer
 
 
@@ -85,6 +85,17 @@ def children(data, count, responder_id):
         child.save()
 
 
+def check_for_capacity(age_answer, marriage_answer):
+    try:
+        limit = get_object_or_404(Limit, marital_status=marriage_answer, age=age_answer)
+        if limit.check_():
+            return True
+        else:
+            return False
+    except:
+        return True
+
+
 def Personal_Question_View(request, answersheet_pk):
     answersheet = get_object_or_404(AnswerSheet, pk=answersheet_pk)
     age_question = answersheet.survey.questions.get(is_first=True)
@@ -110,6 +121,9 @@ def Personal_Question_View(request, answersheet_pk):
         children_answer = request.POST.get('children_answer')
         if age_answer and marriage_answer:
             age_answer = age(age_answer)
+            # چک برای اتمام سهمیه
+            if check_for_capacity(age_answer, marriage_answer):
+                raise ValueError('نظرسنجی به اتمام رسیده است')
             try:
                 children_answer = int(children_answer)
                 if int(children_answer) > 0:

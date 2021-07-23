@@ -196,5 +196,38 @@ class Answer(models.Model):
     answersheet = models.ForeignKey(verbose_name='پاسخنامه', to=AnswerSheet, related_name='answers',
                                     on_delete=models.CASCADE)
     answer = models.CharField(verbose_name='پاسخ', max_length=10, default=None, null=True, blank=True)
-    point = models.PositiveSmallIntegerField(verbose_name='امتیاز', editable=False, null=False, blank=False,default=0)
+    point = models.PositiveSmallIntegerField(verbose_name='امتیاز', editable=False, null=False, blank=False, default=0)
     option = models.ForeignKey(verbose_name='گزینه', on_delete=models.CASCADE, to=Option, null=True, blank=True)
+
+
+class Limit(models.Model):
+    class Meta:
+        verbose_name = 'محدودیت'
+        verbose_name_plural = 'محدودیت'
+        ordering = ['marital_status', 'age']
+
+    marital_status_choices = ((1, 'مجرد'),
+                              (2, 'متاهل'),
+                              (3, 'مطلقه'),
+                              (4, 'بیوه'))
+
+    marital_status = models.IntegerField(verbose_name='وضعیت تاهل', choices=marital_status_choices,
+                                         editable=True, null=False, blank=False)
+    age_choices = ((1, '24-18'),
+                   (2, '29-25'),
+                   (3, '34-30'),
+                   (4, '39-35'),)
+    age = models.IntegerField(verbose_name='بازه سنی', choices=age_choices, editable=True, blank=False, null=False)
+    maximum = models.PositiveSmallIntegerField(verbose_name='تعداد سهمیه', editable=True, blank=False, null=False)
+    capacity = models.PositiveSmallIntegerField(verbose_name='تعداد ثبت نام شده', editable=True, default=0)
+
+    def __str__(self):
+        return f'{self.marital_status}          {self.age}'
+
+    def check_(self):
+        if self.maximum > self.capacity:
+            self.capacity += 1
+            self.save()
+            return True
+        else:
+            return False

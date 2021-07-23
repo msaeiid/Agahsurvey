@@ -7,17 +7,24 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
+    <i class="fas fa-user fa-3x"></i>
         {% for element in responder_form %}
             {{ element }}
         {% endfor %}
+    <i class="fas fa-poll-h fa-3x"></i>
         {% for element in answerSheet_form %}
             {{ element }}
         {% endfor %}
-        <div class="hide error interviewer_code_error">مقدار وارد شده در کد پرسگر نا معتبر است</div>
+        <div class="hide error interviewer_code_error"><i class="fas fa-exclamation"></i>
+            مقدار وارد شده در کد پرسگر نا معتبر است
+        </div>
+    <i class="fas fa-user-tie fa-3x"></i>
         {% for element in interviewer_form %}
             {{ element }}
         {% endfor %}
-        <button type="submit" class="btn btn-primary btn-lg">ادامه</button>
+        <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-chevron-circle-left"></i>
+            ادامه
+        </button>
     </form>
 {% endblock %}
 {% block js %}
