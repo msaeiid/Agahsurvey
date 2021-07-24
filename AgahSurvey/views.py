@@ -122,7 +122,7 @@ def Personal_Question_View(request, answersheet_pk):
         if age_answer and marriage_answer:
             age_answer = age(age_answer)
             # چک برای اتمام سهمیه
-            if check_for_capacity(age_answer, marriage_answer):
+            if not check_for_capacity(age_answer, marriage_answer):
                 raise ValueError('نظرسنجی به اتمام رسیده است')
             try:
                 children_answer = int(children_answer)
