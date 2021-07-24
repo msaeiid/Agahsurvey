@@ -155,25 +155,31 @@ def Social_class(request, answersheet_pk, question_pk):
         context = {'home_question': home_question, 'job_question': job_question, 'region_question': region_question,
                    'region': region}
     else:
-        home_answer = Answer(question=home_question,
-                             option=home_question.options.get(option_value=int(request.POST.get('home'))),
-                             answersheet=answersheet,
-                             point=home_question.options.get(option_value=int(request.POST.get('home'))).option_point)
-        region_answer = Answer(question=region_question,
-                               answer=region_question.regions.get(region_value=int(request.POST.get('region')),
-                                                                  city=answersheet.responser.city).region_value,
-                               answersheet=answersheet,
-                               point=region_question.regions.get(region_value=int(request.POST.get('region')),
-                                                                 city=answersheet.responser.city).region_point)
-        job_answer = Answer(question=job_question,
-                            option=job_question.options.get(option_value=int(request.POST.get('job'))),
-                            point=job_question.options.get(option_value=int(request.POST.get('job'))).option_point,
-                            answersheet=answersheet)
-        home_answer.save()
-        job_answer.save()
-        region_answer.save()
-        answersheet.calculate_total_point()
-        return redirect(reverse('Survey:brand', args=[answersheet.pk, region_question.question_next.pk]))
+        try:
+            home_answer = Answer(question=home_question,
+                                 option=home_question.options.get(option_value=int(request.POST.get('home'))),
+                                 answersheet=answersheet,
+                                 point=home_question.options.get(
+                                     option_value=int(request.POST.get('home'))).option_point)
+            region_answer = Answer(question=region_question,
+                                   answer=region_question.regions.get(region_value=int(request.POST.get('region')),
+                                                                      city=answersheet.responser.city).region_value,
+                                   answersheet=answersheet,
+                                   point=region_question.regions.get(region_value=int(request.POST.get('region')),
+                                                                     city=answersheet.responser.city).region_point)
+            job_answer = Answer(question=job_question,
+                                option=job_question.options.get(option_value=int(request.POST.get('job'))),
+                                point=job_question.options.get(option_value=int(request.POST.get('job'))).option_point,
+                                answersheet=answersheet)
+            home_answer.save()
+            job_answer.save()
+            region_answer.save()
+            answersheet.calculate_total_point()
+            return redirect(reverse('Survey:brand', args=[answersheet.pk, region_question.question_next.pk]))
+        except:
+            region = answersheet.responser.city.regions.all()
+            context = {'home_question': home_question, 'job_question': job_question, 'region_question': region_question,
+                       'region': region, 'error': 'لطفااز لیست مشاغل انتخاب نمایید'}
     return render(request, 'questions/social.html', context=context)
 
 

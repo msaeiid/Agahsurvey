@@ -19,10 +19,16 @@
         <i class="fas fa-user fa-3x"></i>
         {% for element in responder_form %}
             {{ element }}
+            {% if element.errors %}
+                <p class="error">{{ element.errors.as_text }}</p>
+            {% endif %}
         {% endfor %}
         <i class="fas fa-poll-h fa-3x"></i>
         {% for element in answerSheet_form %}
             {{ element }}
+            {% if element.errors %}
+                <p class="error">{{ element.errors.as_text }}</p>
+            {% endif %}
         {% endfor %}
         <div class="hide error interviewer_code_error"><i class="fas fa-exclamation"></i>
             مقدار وارد شده در کد پرسگر نا معتبر است
@@ -30,6 +36,9 @@
         <i class="fas fa-user-tie fa-3x"></i>
         {% for element in interviewer_form %}
             {{ element }}
+            {% if element.errors %}
+                <p class="error">{{ element.errors.as_text }}</p>
+            {% endif %}
         {% endfor %}
         <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-chevron-circle-left"></i>
             ادامه

@@ -26,7 +26,11 @@
             <h4><i class="fas fa-birthday-cake"></i>
                 {{ age_question.question_title }}
             </h4>
-            <input type="text" name="age_answer" placeholder="{{ age_question.question_title }}">
+            <input type="text" name="age_answer" required placeholder="{{ age_question.question_title }}">
+                    {% if age_question.errors %}
+                <p class="error">{{ age_question.errors.as_text }}</p>
+            {% endif %}
+        <br><br>
             <h4><i class="fas fa-ring"></i>
                 {{ marriage_question.question_title }}
             </h4>
@@ -35,16 +39,20 @@
                     <option value="{{ option.option_value }}">{{ option.option_title }} </option>
                 {% endfor %}
             </select>
+        <br>
+        <br>
             <div class="children hide">
                 <h4><i class="fas fa-child"></i>
                     {{ children_question.question_title }}
                 </h4>
                 <input type="text" class="child" name="children_answer"
                        placeholder="{{ children_question.question_title }}">
+                <br>
                 <div class="table_place">
 
                 </div>
             </div>
+        <br>
             <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-chevron-circle-left"></i>
                 ادامه
             </button>

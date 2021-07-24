@@ -376,17 +376,19 @@ function options_show(data, type) {
     let counter = 0
     if (type == 'brands') {
         for (var item in data) {
-            result += '<div class="form-check">' +
-                '<label class="form-check-label" for="flexCheckDefault">' + data[item].option_title + '' +
-                '<input class="form-check-input" type="checkbox" value="' + data[item].option_value + '" name="' + data[item].option_title + '" id="flexCheckDefault">' +
+            result += '<div class="row">' +
+                '<label>' +
+                '<input class="form-check-input" type="checkbox" value="' + data[item].option_value + '" name="' + data[item].option_title + '" id="'+data[item].option_value+'">&nbsp;' +
+                data[item].option_title +
                 '</label>' +
                 '</div>'
         }
     } else if (type == 'rest') {
         for (item in data) {
-            result += '<div class="form-check">' +
-                '<label class="form-check-label" for="flexCheckDefault">' + item + '' +
-                '<input class="form-check-input" type="checkbox" value="' + data[item] + '" name="' + item + '" id="flexCheckDefault">' +
+            result += '<div class="row">' +
+                '<label>' +
+                '<input class="form-check-input" type="checkbox" value="' + data[item] + '" name="' + item + '" id="flexCheckDefault">&nbsp;' +
+                 item +
                 '</label>' +
                 '</div>'
         }
@@ -493,10 +495,10 @@ function options_show(data, type) {
 
 function questions_show() {
     let question = JSON.parse(localStorage.questions)
-    let question_title
+    let question_title='<i class="fas fa-cloud"></i>&nbsp;'
     for (q in question.questions) {
         if (question.questions[q].pk == current_question) {
-            question_title = question.questions[q].question_title
+            question_title += question.questions[q].question_title
         }
     }
     questions_html.fadeIn(400).html(question_title)

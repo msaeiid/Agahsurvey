@@ -9,28 +9,44 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        <h4>{{ home_question.question_title }}</h4>
+        <h4><i class="fas fa-home"></i>
+            {{ home_question.question_title }}
+        </h4>
         <select name="home">
             {% for item in home_question.options.all %}
                 <option value="{{ item.option_value }}">{{ item.option_title }}</option>
             {% endfor %}
         </select>
-        <h4>{{ job_question.question_title }}</h4>
+        <br>
+        <br>
+        <h4><i class="fas fa-briefcase"></i>
+            {{ job_question.question_title }}
+        </h4>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
         {% for item in job_question.options.all %}
             <div class="row">
-                <label><input name="job" type="checkbox" name="{{ item.option_title }}"
-                              value="{{ item.option_value }}">&nbsp;{{ item.option_title }}</label>
+                <label><input name="job" class="form-check-input" type="checkbox" name="{{ item.option_title }}"
+                              value="{{ item.option_value }}">
+                    &nbsp;{{ item.option_title }}</label>
             </div>
         {% endfor %}
         <h3 class="error hide">لطفا حداکثر 3 شغل انتخاب نمایید</h3>
-        <h3>{{ region_question.question_title }}</h3>
+        <br>
+        <br>
+        <h4><i class="fas fa-map-marker-alt"></i>
+            {{ region_question.question_title }}
+        </h4>
         <select name="region">
             {% for reg in region %}
                 <option value="{{ reg.region_value }}">{{ reg.region_title }}</option>
             {% endfor %}
         </select>
         <div>
-            <button type="submit" class="btn btn-primary btn-lg">ادامه</button>
+            <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-chevron-circle-left"></i>
+                ادامه
+            </button>
         </div>
     </form>
 {% endblock %}
