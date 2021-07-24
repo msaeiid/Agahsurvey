@@ -289,18 +289,20 @@ def sentences(request, answersheet_pk, question_pk):
 
 
 def f_name_suggest_ajax(request):
-    if request.is_ajax() and request.method == 'GET':
-        name = request.GET.get('responder_name')
+    if 'term' in request.GET:
+        name = request.GET.get('term')
         names = Responder.objects.filter(responder_name__startswith=name)
-        serialized_names = Responder_fname(names, many=True)
-        context = {'names': serialized_names.data}
-        return JsonResponse(context, safe=True, status=200)
+        names_result = []
+        for name in names:
+            names_result.append(name.responder_name)
+        return JsonResponse(names_result, safe=False, status=200)
 
 
 def l_name_suggest_ajax(request):
-    if request.is_ajax() and request.method == 'GET':
-        family = request.GET.get('responser_family')
+    if 'term' in request.GET:
+        family = request.GET.get('term')
         families = Responder.objects.filter(responser_family__startswith=family)
-        serialized_families = Responder_lname(families, many=True)
-        context = {'families': serialized_families.data}
-        return JsonResponse(context, safe=True, status=200)
+        family_list = []
+        for family in families:
+            family_list.append(family.responser_family)
+        return JsonResponse(family_list, safe=False, status=200)

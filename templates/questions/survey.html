@@ -6,7 +6,12 @@
     {{ title }}
 {% endblock %}
 {% block extra_head %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://unpkg.com/jalali-moment/dist/jalali-moment.browser.js"></script>
+
+    <!--auto complete-->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 {% endblock %}
 {% block content %}
     <form method="post">
@@ -31,7 +36,6 @@
         </button>
     </form>
 
-
     <!-- By default, Datepicker using jQuery, you need to set your script after loading jQuery! -->
     <!-- loading directly -->
     <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
@@ -39,6 +43,7 @@
     <!-- OR -->
     <!-- loading by form (if used AdminJalaliDateWidget) -->
     {{ form.media }}
+
 {% endblock %}
 {% block js %}
     <script type="application/javascript" src="{% static 'js/survey.js' %}"></script>

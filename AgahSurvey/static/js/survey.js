@@ -62,38 +62,15 @@ $('input[name=answersheet_date]').change(function () {
     $('input[name=answersheet_day]').val(result)
 })
 
+$(document).ready($(function () {
+    $('input[name=responder_name]').autocomplete({
+        source: '/survey/f_name_suggest/'
+    });
+}));
 
-$('input[name=responder_name]').keyup(function () {
-    let name_list = [];
-    if (this.value.length > 0) {
-        let serialized_data = $(this).serialize()
-        $.ajax({
-            url: '/survey/f_name_suggest/',
-            data: serialized_data,
-            success: function (response) {
-                var temp = response['names']
-                for (var item in temp) {
-                    name_list.push(temp[item].responder_name)
-                }
-                console.log(name_list)
-            }
-        });
-    }
-});
-$('input[name=responser_family]').keyup(function () {
-    let family_list = [];
-    let serialized_data = $(this).serialize()
-    if (this.value.length > 0) {
-        $.ajax({
-            url: '/survey/l_name_suggest/',
-            data: serialized_data,
-            success: function (response) {
-                var temp = response['families']
-                for (var item in temp) {
-                    family_list.push(temp[item].responser_family)
-                }
-                console.log(family_list)
-            }
-        });
-    }
-});
+
+$(document).ready($(function () {
+    $('input[name=responser_family]').autocomplete({
+        source: '/survey/l_name_suggest/'
+    });
+}));
