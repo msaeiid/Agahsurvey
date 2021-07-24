@@ -38,6 +38,7 @@ class ResponderForm(forms.ModelForm):
                                      validators=[
                                          RegexValidator(regex='[ آابپتسجچحخدذرزسشصضطظعغفقکلمنوهی]+',
                                                         message='لطفا از زبان فارسی استفاده نمایید')])
+
     responser_family = forms.CharField(label='نام خانوادگی پاسخگو', max_length=100,
                                        widget=forms.TextInput(attrs={'class': 'family',
                                                                      'placeholder': 'نام خانوادگی پاسخگو'}),
@@ -66,6 +67,6 @@ class AnswerSheetForm(forms.ModelForm):
         model = AnswerSheet
         fields = ('answersheet_date', 'answersheet_day',)
 
-    def __init__(self,*args,**kwargs):
-        super(AnswerSheetForm, self).__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super(AnswerSheetForm, self).__init__(*args, **kwargs)
         self.fields['answersheet_date'] = JalaliDateField(label='تاریخ مصاحبه', widget=AdminJalaliDateWidget)

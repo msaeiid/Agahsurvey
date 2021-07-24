@@ -5,8 +5,8 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 from django.urls import reverse
 
 from AgahSurvey.forms import ResponderForm, InterviewerForm, AnswerSheetForm
-from AgahSurvey.models import Survey, Interviewer, AnswerSheet, Answer, Question, Child, Option, Limit
-from AgahSurvey.serializer import Brand_Serializer, Question_Serializer
+from AgahSurvey.models import Survey, Interviewer, AnswerSheet, Answer, Question, Child, Option, Limit, Responder
+from AgahSurvey.serializer import Brand_Serializer, Question_Serializer, Responder_fname, Responder_lname
 
 
 def SurveyView(request, title):
@@ -286,3 +286,21 @@ def sentences(request, answersheet_pk, question_pk):
                                 question=question)
                 answer.save()
         return render(request, 'questions/end.html')
+
+
+def f_name_suggest_ajax(request):
+    if request.is_ajax() and request.method == 'GET':
+        name = request.GET.get('responder_name')
+        names = Responder.objects.filter(responder_name__startswith=name)
+        serialized_names = Responder_fname(names, many=True)
+        context = {'names': serialized_names.data}
+        return JsonResponse(context, safe=True, status=200)
+
+
+def l_name_suggest_ajax(request):
+    if request.is_ajax() and request.method == 'GET':
+        family = request.GET.get('responser_family')
+        families = Responder.objects.filter(responser_family__startswith=family)
+        serialized_families = Responder_lname(families, many=True)
+        context = {'families': serialized_families.data}
+        return JsonResponse(context, safe=True, status=200)

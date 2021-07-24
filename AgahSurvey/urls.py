@@ -14,5 +14,7 @@ urlpatterns = [
     path('brands_brands_list/', views.option_list_ajax, name='brands_brands_list'),
     path('brands_questions_list/', views.question_list_ajax, name='brands_questions_list'),
     path('brands_answer_questions/', views.answer_brand_questions_ajax, name='answer_brand_questions_ajax'),
-    path('sentences/<int:answersheet_pk>/<int:question_pk>', views.sentences, name='sentence')
+    path('sentences/<int:answersheet_pk>/<int:question_pk>', views.sentences, name='sentence'),
+    path('f_name_suggest/', views.f_name_suggest_ajax, name='f_name_suggest_ajax'),
+    path('l_name_suggest/', views.l_name_suggest_ajax, name='l_name_suggest_ajax')
 ]
