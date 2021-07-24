@@ -39,7 +39,7 @@ class OptionCustom(admin.ModelAdmin):
 
 
 class AnswerCustom(admin.ModelAdmin):
-    list_display = ('question', 'answer',)
+    list_display = ('answersheet','question', 'answer','option','point')
 
 
 class RegionCustom(admin.ModelAdmin):

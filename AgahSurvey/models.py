@@ -166,6 +166,9 @@ class AnswerSheet(models.Model):
     answersheet_total_point = models.PositiveSmallIntegerField(verbose_name='مجموع امتیاز', default=0, editable=False)
     social_class = models.CharField(verbose_name='کلاس اجتماعی', max_length=1, editable=False)
 
+    def __str__(self):
+        return f'{self.responser.responder_name} {self.responser.responser_family}'
+
     def calculate_total_point(self):
         temp = [p.point for p in self.answers.all()]
         self.answersheet_total_point = sum(temp)
@@ -191,6 +194,7 @@ class Answer(models.Model):
     class Meta:
         verbose_name = 'پاسخ'
         verbose_name_plural = 'پاسخ'
+        ordering=['answersheet','question']
 
     question = models.ForeignKey(verbose_name='پرسش', to=Question, on_delete=models.CASCADE)
     answersheet = models.ForeignKey(verbose_name='پاسخنامه', to=AnswerSheet, related_name='answers',
