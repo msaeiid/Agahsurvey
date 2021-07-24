@@ -5,6 +5,9 @@
     پرسشنامه
     {{ title }}
 {% endblock %}
+{% block extra_head %}
+    <script src="https://unpkg.com/jalali-moment/dist/jalali-moment.browser.js"></script>
+{% endblock %}
 {% block content %}
     <form method="post">
         {% csrf_token %}

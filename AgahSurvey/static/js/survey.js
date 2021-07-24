@@ -32,6 +32,32 @@ $('input[name=responder_mobile]').keyup(function () {
 })
 
 
-$('input[name=answersheet_date]').change(function (){
-    console.log('date i changed...')
+$('input[name=answersheet_date]').change(function () {
+    let temp = moment.from(this.value, 'fa', 'YYYY/M/D').format('YYYY-M-D')
+    var date = new Date(temp.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
+    let result
+    switch (date.getDay()) {
+        case 0:
+            result = 'یکشنبه';
+            break;
+        case 1:
+            result = 'دوشنبه';
+            break;
+        case 2:
+            result = 'سه شنبه';
+            break;
+        case 3:
+            result = 'چهارشنبه';
+            break;
+        case 4:
+            result = 'پنجشنبه';
+            break;
+        case 5:
+            result = 'جمعه';
+            break;
+        case 6:
+            result = 'شنبه';
+            break;
+    }
+    $('input[name=answersheet_day]').val(result)
 })
