@@ -43,7 +43,7 @@ class AnswerCustom(admin.ModelAdmin):
 
 
 class RegionCustom(admin.ModelAdmin):
-    list_display = ('city', 'region_title', 'region_value', 'region_point',)
+    list_display = ('city','question', 'region_title', 'region_value', 'region_point',)
     list_editable = ('region_title', 'region_value', 'region_point',)
 
 
