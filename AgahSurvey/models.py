@@ -30,13 +30,15 @@ class Region(models.Model):
         ordering = ['city', '-region_point']
 
     city = models.ForeignKey(verbose_name='شهر', to=City, on_delete=models.CASCADE, related_name='regions')
-    question = models.ForeignKey(verbose_name='پرسش',to='Question', on_delete=models.CASCADE, related_name='regions', editable=True)
+    question = models.ForeignKey(verbose_name='پرسش', to='Question', on_delete=models.CASCADE, related_name='regions',
+                                 editable=True)
     region_title = models.CharField(verbose_name='عنوان', max_length=50)
     region_value = models.PositiveSmallIntegerField(verbose_name='مقدار')
     region_point = models.PositiveSmallIntegerField(verbose_name='امتیاز')
 
     def __str__(self):
         return f'{self.region_title}'
+
 
 class Interviewer(models.Model):
     '''
@@ -196,7 +198,7 @@ class Answer(models.Model):
     class Meta:
         verbose_name = 'پاسخ'
         verbose_name_plural = 'پاسخ'
-        ordering=['answersheet','question']
+        ordering = ['answersheet', 'question']
 
     question = models.ForeignKey(verbose_name='پرسش', to=Question, on_delete=models.CASCADE)
     answersheet = models.ForeignKey(verbose_name='پاسخنامه', to=AnswerSheet, related_name='answers',

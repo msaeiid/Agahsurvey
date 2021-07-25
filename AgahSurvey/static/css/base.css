@@ -1,6 +1,9 @@
 body {
-    background-color: #FEFEFC;
+    background-color: #72DDF7;
     text-align: right;
+}
+.btn-success ,.btn-primary{
+    background-color: #72DDF7;
 }
 
 input, select {
@@ -14,13 +17,13 @@ text{
 .custom_container {
     margin-top: 20px;
     margin-bottom: 50px;
-    background-color: #E8966C;
+    background-color: #B388EB;
     padding: 40px;
     border-radius: 20px;
 }
 
 h4 {
-    color: #2D297B;
+    color: #023047;
 }
 
 /*.btn-primary {
@@ -28,7 +31,7 @@ h4 {
 }*/
 
 .error {
-    color: #E85832;
+    color: #023047;
 }
 
 .hide {

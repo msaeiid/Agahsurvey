@@ -70,4 +70,4 @@ class AnswerSheetForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AnswerSheetForm, self).__init__(*args, **kwargs)
-        self.fields['answersheet_date'] = JalaliDateField(label='تاریخ مصاحبه', widget=AdminJalaliDateWidget)
+        self.fields['answersheet_date'] = JalaliDateField(label='تاریخ مصاحبه', widget=AdminJalaliDateWidget(attrs={'placeholder':'تاریخ','autocomplete':'off'}))
