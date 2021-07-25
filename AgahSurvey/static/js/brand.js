@@ -192,7 +192,7 @@ function question_management(next_or_previous, answer = undefined) {
             A8[chart_data[i]] = chart_value[i]
         }
         localStorage.setItem('A8', JSON.stringify(A8))
-        let result = '<div class="row"><div class="col-lg-2 col-md-2 col-sm-12 col-12"></div><div class="col-lg-8 col-md-8 col-sm-12 col-12"><canvas id="myChart" width="400" height="400"></canvas></div></div>'
+        let result = '<div class="row"><div class="col-lg-2 col-md-2 col-sm-12 col-12"></div><div class="col-lg-5 col-md-5 col-sm-12 col-12"><canvas id="myChart" width="400" height="400"></canvas></div></div>'
         options_html.fadeIn(400).html(result)
         next_btn.fadeIn(400)
         previous_btn.fadeIn(400)
@@ -206,14 +206,14 @@ function question_management(next_or_previous, answer = undefined) {
                     label: chart_data,
                     data: chart_value,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
+                        'rgba(205, 180, 219, 1)',
+                        'rgba(255, 175, 204, 1)',
+                        'rgba(162, 210, 255, 1)',
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
+                        'rgba(205, 180, 219, 1)',
+                        'rgba(255, 175, 204, 1)',
+                        'rgba(162, 210, 255, 1)',
                     ],
                     borderWidth: 1
                 }]
@@ -514,3 +514,7 @@ function set_data_localstorage(answer, where) {
     localStorage.setItem(where, JSON.stringify(temp))
     return temp
 }
+
+$('form').submit(function (){
+    $('button[type=submit]').addClass('hide')
+});

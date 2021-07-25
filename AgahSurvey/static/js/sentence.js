@@ -55,3 +55,7 @@ $('input[type=checkbox]').click(function () {
         $('input[name=' + this.name + '][value=99]').prop('checked', false)
     }
 });
+
+$('form').submit(function (){
+    $('button[type=submit]').addClass('hide')
+});
