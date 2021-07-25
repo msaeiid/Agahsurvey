@@ -22,9 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-qwv5ge513obzv7g3g!e!v2$2yp7m_0rvtghk5eq7e1_l*jd1+&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['msaeiid.pythonanywhere.com']
 
 # Application definition
 
@@ -75,10 +75,17 @@ WSGI_APPLICATION = 'djangoProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'msaeiid$agahsurvey',
+        'USER': 'msaeiid',
+        'PASSWORD': '77002783Sas',
+        'HOST': 'msaeiid.mysql.pythonanywhere-services.com',
+        'TEST': {
+            'NAME': 'msaeiid$default',
+                }
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
