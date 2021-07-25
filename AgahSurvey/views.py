@@ -6,7 +6,13 @@ from django.urls import reverse
 
 from AgahSurvey.forms import ResponderForm, InterviewerForm, AnswerSheetForm
 from AgahSurvey.models import Survey, Interviewer, AnswerSheet, Answer, Question, Child, Option, Limit, Responder
-from AgahSurvey.serializer import Brand_Serializer, Question_Serializer, Responder_fname, Responder_lname
+from AgahSurvey.serializer import Brand_Serializer, Question_Serializer
+
+
+def welcome(request):
+    if request.method == 'GET':
+        survey = Survey.objects.first()
+        return render(request, 'questions/welcome.html', context={'survey': survey})
 
 
 def SurveyView(request, title):

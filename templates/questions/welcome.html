@@ -1,0 +1,8 @@
+{% extends 'questions/base.html' %}
+{% block title %}
+    تست سامانه
+{% endblock %}
+{% block content %}
+    <h4>به منظور تست سامانه کلیک نمایید</h4>
+    <a href="{% url 'Survey:survey' survey.survey_title %}" class="btn btn-success btn-lg">ورود</a>
+{% endblock %}

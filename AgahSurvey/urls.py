@@ -5,6 +5,7 @@ from AgahSurvey import views
 app_name = 'Survey'
 
 urlpatterns = [
+    path('', views.welcome, name='welcome_page'),
     path('survey/<str:title>/', views.SurveyView, name='survey'),
     path('question/<int:answersheet_pk>/', views.Personal_Question_View, name='PersonalQuestion'),
     path('social_question/<int:answersheet_pk>/<int:question_pk>', views.Social_class, name='SocialQuestion'),
