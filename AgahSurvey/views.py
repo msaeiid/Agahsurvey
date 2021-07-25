@@ -209,7 +209,7 @@ def Brand_View(request):
                    }
         return render(request, 'questions/brand.html', context=context)
     else:
-        question = Question.objects.get(pk=request.POST.get('last_question'))
+        question = Question.objects.get(pk=request.session.get("question"))
         request.session['question'] = question.question_next.pk
         return redirect(reverse('Survey:sentence'))
 
@@ -284,7 +284,7 @@ def save(data, question, answersheet):
 
 
 def sentences(request):
-    answersheet_pk = AnswerSheet.objects.get(pk=request.session.get('answersheet'))
+    answersheet_pk = AnswerSheet.objects.get(pk=request.session.get('answersheet')).pk
     question_pk = Question.objects.get(pk=request.session.get('question')).pk
     if request.method == 'GET':
         import json
@@ -292,12 +292,12 @@ def sentences(request):
         pklist = list()
         for item in A6.keys():
             pklist.append(item)
-        main_question = get_object_or_404(Question, pk=question_pk)
+        main_question = get_object_or_404(Question, pk=18)
         A6 = Option.objects.filter(option_title__in=pklist)
         del pklist
         last = question_pk + 8
-        other_questions = get_list_or_404(Question, pk__gte=main_question.question_next_id, pk__lte=last)
-        context = {'main_question': main_question, 'other_question': other_questions, 'A6': A6, 'last_question': last,
+        other_questions = get_list_or_404(Question, pk__gte=main_question.question_next_id, pk__lte=26)
+        context = {'main_question': main_question, 'other_question': other_questions, 'A6': A6, 'last_question': 26,
                    'first_question': main_question.question_next_id}
         return render(request, 'questions/sentence.html', context=context)
     else:
