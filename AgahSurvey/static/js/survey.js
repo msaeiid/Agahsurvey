@@ -74,3 +74,6 @@ $(document).ready($(function () {
         source: '/survey/l_name_suggest/'
     });
 }));
+$('form').submit(function () {
+    $('button[type=submit]').addClass('hide')
+});

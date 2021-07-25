@@ -32,19 +32,19 @@ $('input[type=checkbox]').on("change", function (event) {
     }
     var result = true
     for (var item in controller) {
-        if (controller[item] ==false){
-            result=false
+        if (controller[item] == false) {
+            result = false
         }
     }
-    if(result == true){
+    if (result == true) {
         $('#submit').removeClass('hide')
     }
 });
 
 function show_question() {
     query = '#question' + current_question
-    $('.questions').addClass('hide')
-    $(query).removeClass('hide')
+    $('.questions').addClass('hide').fadeOut(200)
+    $(query).removeClass('hide').fadeIn(200)
 }
 
 $('input[type=checkbox]').click(function () {

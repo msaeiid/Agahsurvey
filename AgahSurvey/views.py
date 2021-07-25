@@ -11,6 +11,8 @@ from AgahSurvey.serializer import Brand_Serializer, Question_Serializer
 
 def welcome(request):
     if request.method == 'GET':
+        request.session['answersheet'] = None
+        request.session['question'] = None
         survey = Survey.objects.first()
         return render(request, 'questions/welcome.html', context={'survey': survey})
 
@@ -27,26 +29,30 @@ def SurveyView(request, title):
                    'title': survey.survey_title}
 
     else:
-        interviewer_form = InterviewerForm(request.POST)  # done
-        responder_form = ResponderForm(request.POST)  # done
-        answerSheet_form = AnswerSheetForm(request.POST)  # done
-        if interviewer_form.is_valid() and responder_form.is_valid() and answerSheet_form.is_valid():
-            interviewer = get_object_or_404(Interviewer,
-                                            interviewer_code=interviewer_form.cleaned_data.get('interviewer_code'))
-            responder = responder_form.save()
-            answerSheet = answerSheet_form.save(commit=False)
-            answerSheet.interviewer_id = interviewer.pk
-            answerSheet.responser_id = responder.pk
-            answerSheet.survey_id = survey.pk
-            answerSheet.save()
-            return redirect(reverse('Survey:PersonalQuestion', args=[answerSheet.pk]))
+        if request.session.get('answersheet') is None:
+            interviewer_form = InterviewerForm(request.POST)  # done
+            responder_form = ResponderForm(request.POST)  # done
+            answerSheet_form = AnswerSheetForm(request.POST)  # done
+            if interviewer_form.is_valid() and responder_form.is_valid() and answerSheet_form.is_valid():
+                interviewer = get_object_or_404(Interviewer,
+                                                interviewer_code=interviewer_form.cleaned_data.get('interviewer_code'))
+                responder = responder_form.save()
+                answerSheet = answerSheet_form.save(commit=False)
+                answerSheet.interviewer_id = interviewer.pk
+                answerSheet.responser_id = responder.pk
+                answerSheet.survey_id = survey.pk
+                answerSheet.save()
+                request.session['answersheet'] = answerSheet.pk
+                return redirect(reverse('Survey:PersonalQuestion'))
+            else:
+                interviewer_form = InterviewerForm(request.POST)
+                responder_form = ResponderForm(request.POST)
+                answerSheet_form = AnswerSheetForm(request.POST)
+                context = {'interviewer_form': interviewer_form,
+                           'responder_form': responder_form,
+                           'answerSheet_form': answerSheet_form}
         else:
-            interviewer_form = InterviewerForm(request.POST)
-            responder_form = ResponderForm(request.POST)
-            answerSheet_form = AnswerSheetForm(request.POST)
-            context = {'interviewer_form': interviewer_form,
-                       'responder_form': responder_form,
-                       'answerSheet_form': answerSheet_form}
+            raise ValueError('کاربر پرسشنامه فعال ندارد')
 
     return render(request=request, template_name='questions/survey.html', context=context)
 
@@ -102,7 +108,8 @@ def check_for_capacity(age_answer, marriage_answer):
         return True
 
 
-def Personal_Question_View(request, answersheet_pk):
+def Personal_Question_View(request):
+    answersheet_pk = request.session.get('answersheet')
     answersheet = get_object_or_404(AnswerSheet, pk=answersheet_pk)
     age_question = answersheet.survey.questions.get(is_first=True)
     marriage_question = answersheet.survey.questions.get(pk=age_question.question_next.pk)
@@ -144,16 +151,17 @@ def Personal_Question_View(request, answersheet_pk):
             marriage_answer.save()
             age_answer.save()
             children_answer.save()
-            return redirect(reverse('Survey:SocialQuestion', args=[answersheet.pk, children_question.question_next.pk]))
+            request.session['question'] = children_question.question_next.pk
+            return redirect(reverse('Survey:SocialQuestion'))
         else:
             context = {'age_question': age_question, 'marriage_question': marriage_question,
                        'children_question': children_question}
     return render(request, 'questions/question.html', context=context)
 
 
-def Social_class(request, answersheet_pk, question_pk):
-    answersheet = AnswerSheet.objects.get(pk=answersheet_pk)
-    home_question = Question.objects.get(pk=question_pk)
+def Social_class(request):
+    answersheet = AnswerSheet.objects.get(pk=request.session.get('answersheet'))
+    home_question = Question.objects.get(pk=5)#request.session.get('question')
     job_question = home_question.question_next
     region_question = job_question.question_next
     if request.method == 'GET':
@@ -181,7 +189,8 @@ def Social_class(request, answersheet_pk, question_pk):
             job_answer.save()
             region_answer.save()
             answersheet.calculate_total_point()
-            return redirect(reverse('Survey:brand', args=[answersheet.pk, region_question.question_next.pk]))
+            request.session['question'] = region_question.question_next.pk
+            return redirect(reverse('Survey:brand'))
         except:
             region = answersheet.responser.city.regions.all()
             context = {'home_question': home_question, 'job_question': job_question, 'region_question': region_question,
@@ -189,7 +198,9 @@ def Social_class(request, answersheet_pk, question_pk):
     return render(request, 'questions/social.html', context=context)
 
 
-def Brand_View(request, answersheet_pk, question_pk):
+def Brand_View(request):
+    answersheet_pk = AnswerSheet.objects.get(pk=request.session.get('answersheet'))
+    question_pk = Question.objects.get(pk=8).pk#request.session.get('question')
     if request.method == 'GET':
         questions = Question.objects.filter(pk__gte=question_pk, pk__lt=question_pk + 10)
         context = {'answersheet': answersheet_pk,
@@ -199,7 +210,8 @@ def Brand_View(request, answersheet_pk, question_pk):
         return render(request, 'questions/brand.html', context=context)
     else:
         question = Question.objects.get(pk=request.POST.get('last_question'))
-        return redirect(reverse('Survey:sentence', args=[answersheet_pk, question.question_next.pk]))
+        request.session['question'] = question.question_next.pk
+        return redirect(reverse('Survey:sentence'))
 
 
 def option_list_ajax(request):
@@ -253,7 +265,7 @@ def answer_brand_questions_ajax(request):
     import json
     if request.is_ajax and request.method == 'GET':
         list_data = ['A1', 'A2', 'A4', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'A12']
-        answersheet = get_object_or_404(AnswerSheet, pk=json.loads(request.GET.get("answersheet")))
+        answersheet = get_object_or_404(AnswerSheet, pk=request.session.get("answersheet"))
         last_question = json.loads(request.GET.get("last_question"))
         last_question = get_object_or_404(Question, pk=last_question)
         first_question = json.loads(request.GET.get("first_question"))
@@ -271,7 +283,9 @@ def save(data, question, answersheet):
         answer.save()
 
 
-def sentences(request, answersheet_pk, question_pk):
+def sentences(request):
+    answersheet_pk = AnswerSheet.objects.get(pk=request.session.get('answersheet'))
+    question_pk = Question.objects.get(pk=request.session.get('question')).pk
     if request.method == 'GET':
         import json
         A6 = json.loads(request.session.get('A6'))

@@ -27,9 +27,7 @@
                 {{ age_question.question_title }}
             </h4>
             <input type="text" name="age_answer" required placeholder="{{ age_question.question_title }}">
-                    {% if age_question.errors %}
-                <p class="error">{{ age_question.errors.as_text }}</p>
-            {% endif %}
+                <p class="age-error error hide">سال تولد را به صورت کامل وارد نمایید به عنوان مثال 1365</p>
         <br><br>
             <h4><i class="fas fa-ring"></i>
                 {{ marriage_question.question_title }}

@@ -1,4 +1,22 @@
 const child = $('.child')
+$('input[name=age_answer]').keyup(function () {
+    if (this.value.length >= 2) {
+        if (parseInt(this.value) < 1300) {
+            if ($('.age-error').hasClass('hide')) {
+                $('.age-error').removeClass('hide')
+            }
+        } else {
+            if (!$('.age-error').hasClass('hide')) {
+                $('.age-error').addClass('hide')
+            }
+        }
+    }
+})
+
+
+$('form').submit(function () {
+    $('button[type=submit]').addClass('hide')
+});
 
 function show_child(number_of_child) {
     let table_place = $('.table_place')
@@ -7,7 +25,7 @@ function show_child(number_of_child) {
         for (let i = 1; i <= number_of_child; i++) {
             result += '<tr scope="row"><td>' + i + '</td>' +
                 '<td><select class="form-select" name="gender_' + i + '"><option value="male">پسر</option><option value="female">دختر</option></select></td>' +
-                '<td><input type="number" class="year form-control" name="year_' + i + '" placeholder="سال تولد" maxlength="4"></td>' +
+                '<td><input required type="number" class="year form-control" name="year_' + i + '" placeholder="سال تولد" maxlength="4"></td>' +
                 '<td><input class="form-control" type="text" name="age_' + i + '" disabled></td>' +
                 '</tr>'
         }
@@ -58,6 +76,7 @@ let marriage_status = $('select[name=marriage_answer]')
 marriage_status.change(function () {
     if (this.value == 2 || this.value == 3 || this.value == 4) {
         $('div .children').fadeIn(500).removeClass('hide')
+        $('input[name=children_answer]').attr('required','')
     } else {
         $('div .children').fadeOut(500).addClass('hide')
     }

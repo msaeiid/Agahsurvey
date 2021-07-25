@@ -6,6 +6,7 @@ from jalali_date.widgets import AdminJalaliDateWidget
 from AgahSurvey.models import Interviewer, Responder, AnswerSheet
 
 
+
 class InterviewerForm(forms.ModelForm):
     interviewer_code = forms.CharField(label='کد پرسشگر',
                                        widget=forms.TextInput(
