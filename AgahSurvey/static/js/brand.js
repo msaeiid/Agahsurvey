@@ -8,8 +8,10 @@ let first_question = parseInt($('input[name=first_question]').val())
 let last_question = parseInt($('input[name=last_question]').val())
 let submit_btn = $('#submit')
 //form submit...
+$('#submit').click(function () {
+    $('#submit').addClass('hide')
+})
 $('form').submit(function () {
-        $('#submit').addClass('hide')
     let A1 = localStorage.getItem("A1")
     let A2 = localStorage.getItem("A2")
     let A4 = localStorage.getItem("A4")
@@ -40,7 +42,7 @@ $('form').submit(function () {
             'A11': A11,
             'A12': A12,
         },
-        async:false,
+        async: false,
         success: function () {
             console.log('ajax success')
             //$('form').submit();
