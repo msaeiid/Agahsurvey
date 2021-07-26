@@ -7,6 +7,48 @@ let current_question = parseInt($('input[name=first_question]').val())
 let first_question = parseInt($('input[name=first_question]').val())
 let last_question = parseInt($('input[name=last_question]').val())
 let submit_btn = $('#submit')
+//form submit...
+$('form').submit(function () {
+        $('#submit').addClass('hide')
+    let A1 = localStorage.getItem("A1")
+    let A2 = localStorage.getItem("A2")
+    let A4 = localStorage.getItem("A4")
+    let A6 = localStorage.getItem("A6")
+    let A7 = localStorage.getItem("A7")
+    let A8 = localStorage.getItem("A8")
+    let A9 = localStorage.getItem("A9")
+    let A10 = localStorage.getItem("A10")
+    let A11 = localStorage.getItem("A11")
+    let A12 = localStorage.getItem("A12")
+    let answersheet = $('input[name=answersheet]').val()
+    let last_question = $('input[name=last_question]').val()
+    let first_question = $('input[name=first_question]').val()
+    $.ajax({
+        url: '/survey/brands_answer_questions/',
+        data: {
+            'answersheet': answersheet,
+            'last_question': last_question,
+            'first_question': first_question,
+            'A1': A1,
+            'A2': A2,
+            'A4': A4,
+            'A6': A6,
+            'A7': A7,
+            'A8': A8,
+            'A9': A9,
+            'A10': A10,
+            'A11': A11,
+            'A12': A12,
+        },
+        async:false,
+        success: function () {
+            console.log('ajax success')
+            //$('form').submit();
+        }
+    });
+});
+//form submit...
+
 $(document).ready(function () {
     fetch_data_from_server()
 });
@@ -475,41 +517,3 @@ function set_data_localstorage(answer, where) {
     localStorage.setItem(where, JSON.stringify(temp))
     return temp
 }
-
-$('form').submit(function () {
-    $('button[type=submit]').addClass('hide')
-    let A1 = localStorage.getItem("A1")
-    let A2 = localStorage.getItem("A2")
-    let A4 = localStorage.getItem("A4")
-    let A6 = localStorage.getItem("A6")
-    let A7 = localStorage.getItem("A7")
-    let A8 = localStorage.getItem("A8")
-    let A9 = localStorage.getItem("A9")
-    let A10 = localStorage.getItem("A10")
-    let A11 = localStorage.getItem("A11")
-    let A12 = localStorage.getItem("A12")
-    let answersheet = $('input[name=answersheet]').val()
-    let last_question = $('input[name=last_question]').val()
-    let first_question = $('input[name=first_question]').val()
-    $.ajax({
-        url: '/survey/brands_answer_questions/',
-        data: {
-            'answersheet': answersheet,
-            'last_question': last_question,
-            'first_question': first_question,
-            'A1': A1,
-            'A2': A2,
-            'A4': A4,
-            'A6': A6,
-            'A7': A7,
-            'A8': A8,
-            'A9': A9,
-            'A10': A10,
-            'A11': A11,
-            'A12': A12,
-        },
-        success: function () {
-            $('form').submit();
-        }
-    });
-});
