@@ -12,11 +12,11 @@ $(document).ready(function () {
 });
 
 function fetch_data_from_server() {
-    let serialized_current=$($('input[name=first_question]')).serialize()
+    let serialized_current = $($('input[name=first_question]')).serialize()
     $.ajax({
         url: '/survey/brands_brands_list/',
         dataType: "json",
-        data:serialized_current,
+        data: serialized_current,
         success: function (response) {
             localStorage.setItem('options', JSON.stringify(response))
         }
@@ -100,8 +100,7 @@ function question_management(next_or_previous, answer = undefined) {
                 alert('لطفا فقط یک برند را انتخاب کنید')
             }
         });
-    } 
-    else if (current_question == 9) {
+    } else if (current_question == 9) {
         //question9
         let temp
         if (next_or_previous == 'next') {
@@ -124,8 +123,7 @@ function question_management(next_or_previous, answer = undefined) {
             }
         }
         options_show(brands, 'brands')
-    } 
-    else if (current_question == 10) {
+    } else if (current_question == 10) {
         //question10
         let temp
         if (next_or_previous == 'next') {
@@ -311,43 +309,6 @@ function question_management(next_or_previous, answer = undefined) {
             'را فشار دهید' +
             '</h2>'
         options_html.fadeIn(400).html(result)
-        $('button[type=submit]').click(function () {
-            let A1 = localStorage.getItem("A1")
-            let A2 = localStorage.getItem("A2")
-            let A4 = localStorage.getItem("A4")
-            let A6 = localStorage.getItem("A6")
-            let A7 = localStorage.getItem("A7")
-            let A8 = localStorage.getItem("A8")
-            let A9 = localStorage.getItem("A9")
-            let A10 = localStorage.getItem("A10")
-            let A11 = localStorage.getItem("A11")
-            let A12 = localStorage.getItem("A12")
-            let answersheet = $('input[name=answersheet]').val()
-            let last_question = $('input[name=last_question]').val()
-            let first_question = $('input[name=first_question]').val()
-            $.ajax({
-                url: '/survey/brands_answer_questions/',
-                data: {
-                    'answersheet': answersheet,
-                    'last_question': last_question,
-                    'first_question': first_question,
-                    'A1': A1,
-                    'A2': A2,
-                    'A4': A4,
-                    'A6': A6,
-                    'A7': A7,
-                    'A8': A8,
-                    'A9': A9,
-                    'A10': A10,
-                    'A11': A11,
-                    'A12': A12,
-                },
-                success: function () {
-                    $('form').submit();
-                }
-            });
-        });
-
     }
     questions_show()
 }
@@ -378,7 +339,7 @@ function options_show(data, type) {
         for (var item in data) {
             result += '<div class="row">' +
                 '<label>' +
-                '<input class="form-check-input" type="checkbox" value="' + data[item].option_value + '" name="' + data[item].option_title + '" id="'+data[item].option_value+'">&nbsp;' +
+                '<input class="form-check-input" type="checkbox" value="' + data[item].option_value + '" name="' + data[item].option_title + '" id="' + data[item].option_value + '">&nbsp;' +
                 data[item].option_title +
                 '</label>' +
                 '</div>'
@@ -388,7 +349,7 @@ function options_show(data, type) {
             result += '<div class="row">' +
                 '<label>' +
                 '<input class="form-check-input" type="checkbox" value="' + data[item] + '" name="' + item + '" id="flexCheckDefault">&nbsp;' +
-                 item +
+                item +
                 '</label>' +
                 '</div>'
         }
@@ -495,7 +456,7 @@ function options_show(data, type) {
 
 function questions_show() {
     let question = JSON.parse(localStorage.questions)
-    let question_title='<i class="fas fa-cloud"></i>&nbsp;'
+    let question_title = '<i class="fas fa-cloud"></i>&nbsp;'
     for (q in question.questions) {
         if (question.questions[q].pk == current_question) {
             question_title += question.questions[q].question_title
@@ -515,6 +476,40 @@ function set_data_localstorage(answer, where) {
     return temp
 }
 
-$('form').submit(function (){
+$('form').submit(function () {
     $('button[type=submit]').addClass('hide')
+    let A1 = localStorage.getItem("A1")
+    let A2 = localStorage.getItem("A2")
+    let A4 = localStorage.getItem("A4")
+    let A6 = localStorage.getItem("A6")
+    let A7 = localStorage.getItem("A7")
+    let A8 = localStorage.getItem("A8")
+    let A9 = localStorage.getItem("A9")
+    let A10 = localStorage.getItem("A10")
+    let A11 = localStorage.getItem("A11")
+    let A12 = localStorage.getItem("A12")
+    let answersheet = $('input[name=answersheet]').val()
+    let last_question = $('input[name=last_question]').val()
+    let first_question = $('input[name=first_question]').val()
+    $.ajax({
+        url: '/survey/brands_answer_questions/',
+        data: {
+            'answersheet': answersheet,
+            'last_question': last_question,
+            'first_question': first_question,
+            'A1': A1,
+            'A2': A2,
+            'A4': A4,
+            'A6': A6,
+            'A7': A7,
+            'A8': A8,
+            'A9': A9,
+            'A10': A10,
+            'A11': A11,
+            'A12': A12,
+        },
+        success: function () {
+            $('form').submit();
+        }
+    });
 });

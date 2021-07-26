@@ -203,8 +203,8 @@ def Brand_View(request):
                    }
         return render(request, 'questions/brand.html', context=context)
     else:
-        question = get_object_or_404(Question, pk=request.POST.get('last_question'))
-        request.session['question'] = question.question_next.pk
+        #question = get_object_or_404(Question, pk=request.POST.get('last_question'))
+        #request.session['question'] = question.question_next.pk
         return redirect(reverse('Survey:sentence'))
 
 
@@ -265,9 +265,10 @@ def answer_brand_questions_ajax(request):
             question = get_object_or_404(Question, pk=first_question)
             save(json.loads(request.GET.get(item)), question, answersheet)
             first_question += 1
-        question = get_object_or_404(Question, pk=request.POST.get('last_question'))
+        question = get_object_or_404(Question, pk=int(request.GET.get('last_question')))
         request.session['question'] = question.question_next.pk
         request.session["A6"] = request.GET.get('A6')
+        return JsonResponse({},status=200)
 
 
 def save(data, question, answersheet):
@@ -304,8 +305,10 @@ def sentences(request):
                 answer = Answer(answer=int(option), answersheet=answersheet,
                                 question=question)
                 answer.save()
-            del request.session['answersheet']
-            del request.session['question']
+            if request.session.exists('answersheet'):
+                del request.session['answersheet']
+            if request.session.exists('question'):
+                del request.session['question']
         return render(request, 'questions/end.html')
 
 
