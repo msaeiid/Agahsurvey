@@ -130,14 +130,18 @@ def Personal_Question_View(request):
             age_answer = age(age_answer)
             # چک برای اتمام سهمیه
             if not check_for_capacity(age_answer, marriage_answer):
-                if request.session.exists(request.session['answersheet']):
-                    if AnswerSheet.objects.exists(pk=request.session['answersheet']):
-                        AnswerSheet.objects.get(pk=request.session['answersheet']).delete()
+                if AnswerSheet.objects.filter(pk=request.session['answersheet']).exists:
+                    answersheet=AnswerSheet.objects.get(pk=request.session['answersheet'])
+                    answersheet.responser.delete()
+                    answersheet.delete()
+                del request.session['answersheet']
                 raise ValueError('نظرسنجی به اتمام رسیده است(ظرفیت گروه سنی مشخص شده تمام شده است)')
             # چک که تاهل 0 هست یا سن
             if int(marriage_answer) == 0 or age_answer == 0:
-                if AnswerSheet.objects.filter(pk=request.session['answersheet']).exists():
-                    AnswerSheet.objects.get(pk=request.session['answersheet']).delete()
+                if AnswerSheet.objects.filter(pk=request.session['answersheet']).exists:
+                    answersheet=AnswerSheet.objects.get(pk=request.session['answersheet'])
+                    answersheet.responser.delete()
+                    answersheet.delete()
                     del request.session['answersheet']
                     raise ValueError('نظرسنجی به اتمام رسیده است(کاربر امتناع از ورود وضعیت تاهل داشته است یا سن در رنج مشخص شده نبوده است)')
             try:
