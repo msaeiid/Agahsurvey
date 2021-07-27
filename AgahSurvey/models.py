@@ -103,7 +103,7 @@ class Child(models.Model):
     child_age = models.IntegerField(verbose_name='محسابه سن اتومات', default=0, editable=False)
 
     def __str__(self):
-        return f'فرزندان' \
+        return f' فرزندان ' \
                f'{self.responder.responder_name}'
 
 
@@ -212,7 +212,8 @@ class Answer(models.Model):
     option = models.ForeignKey(verbose_name='گزینه', on_delete=models.CASCADE, to=Option, null=True, blank=True)
 
     def __str__(self):
-        return  f'{self.answer}                 {self.option.option_title}'
+        return  f'پاسخ سوال' \
+                f' {self.question.question_title}'
 
 
 class Limit(models.Model):
