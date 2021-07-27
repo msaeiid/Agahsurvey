@@ -75,7 +75,7 @@ def age(answer):
             return 7
         elif 55 <= result <= 59:
             return 8
-        elif 60 <= result <= 64:
+        elif 60 <= result < 64:
             return 9
         else:
             return 0
@@ -130,7 +130,16 @@ def Personal_Question_View(request):
             age_answer = age(age_answer)
             # چک برای اتمام سهمیه
             if not check_for_capacity(age_answer, marriage_answer):
-                raise ValueError('نظرسنجی به اتمام رسیده است')
+                if request.session.exists(request.session['answersheet']):
+                    if AnswerSheet.objects.exists(pk=request.session['answersheet']):
+                        AnswerSheet.objects.get(pk=request.session['answersheet']).delete()
+                raise ValueError('نظرسنجی به اتمام رسیده است(ظرفیت گروه سنی مشخص شده تمام شده است)')
+            # چک که تاهل 0 هست یا سن
+            if int(marriage_answer) == 0 or age_answer == 0:
+                if AnswerSheet.objects.filter(pk=request.session['answersheet']).exists():
+                    AnswerSheet.objects.get(pk=request.session['answersheet']).delete()
+                    del request.session['answersheet']
+                    raise ValueError('نظرسنجی به اتمام رسیده است(کاربر امتناع از ورود وضعیت تاهل داشته است یا سن در رنج مشخص شده نبوده است)')
             try:
                 children_answer = int(children_answer)
                 if int(children_answer) > 0:
