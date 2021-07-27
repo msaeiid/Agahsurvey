@@ -102,6 +102,10 @@ class Child(models.Model):
         RegexValidator(regex='^1[0-9]{3}$', message='لطفا سال تولد را صحیح و کامل وارد نمایید')])
     child_age = models.IntegerField(verbose_name='محسابه سن اتومات', default=0, editable=False)
 
+    def __str__(self):
+        return f'فرزندان' \
+               f'{self.responder.responder_name}'
+
 
 class Survey(models.Model):
     '''
@@ -206,6 +210,9 @@ class Answer(models.Model):
     answer = models.CharField(verbose_name='پاسخ', max_length=10, default=None, null=True, blank=True)
     point = models.PositiveSmallIntegerField(verbose_name='امتیاز', editable=False, null=False, blank=False, default=0)
     option = models.ForeignKey(verbose_name='گزینه', on_delete=models.CASCADE, to=Option, null=True, blank=True)
+
+    def __str__(self):
+        return  f'{self.answer}                 {self.option.option_title}'
 
 
 class Limit(models.Model):
